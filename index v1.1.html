@@ -1,0 +1,2590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRISM — Participation Routines &amp; Inclusive Supports Map</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #003366;
+      --navy-mid: #1a5294;
+      --navy-light: #e8eef5;
+      --gold: #c8960c;
+      --gold-light: #fdf6e3;
+      --gold-mid: #e8c96a;
+      --sage: #003366;
+      --sage-light: #e8eef5;
+      --sage-mid: #7a9cbf;
+      --warm: #c8960c;
+      --warm-light: #fdf6e3;
+      --warm-mid: #e8c96a;
+      --slate: #1a3a5c;
+      --slate-light: #edf1f6;
+      --cream: #f8f9fb;
+      --ink: #1a2733;
+      --muted: #6b7c8d;
+      --border: #d0dae4;
+      --atl: #1a6b8a;
+      --atl-light: #e6f3f8;
+      --atl-mid: #90c4d8;
+      --sed: #5a3d7a;
+      --sed-light: #f0eaf6;
+      --sed-mid: #b8a0d0;
+      --reg: #2e6b3e;
+      --reg-light: #e8f4ec;
+      --reg-mid: #8ec4a0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Source Sans 3', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--navy);
+      color: white;
+      padding: 0 0 44px;
+      position: relative;
+      overflow: hidden;
+    }
+    .district-bar {
+      background: var(--gold);
+      padding: 8px 40px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .district-bar::before {
+      content: '★';
+      font-size: 0.7rem;
+    }
+    .header-inner { padding: 28px 40px 0; }
+    .header-inner { max-width: 860px; position: relative; z-index: 1; }
+    header .eyebrow {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-mid);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    header h1 {
+      font-family: 'Merriweather', serif;
+      font-size: 2.1rem;
+      font-weight: 600;
+      line-height: 1.25;
+      margin-bottom: 14px;
+    }
+    .prism-lockup {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0 10px;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .prism-word {
+      font-family: 'Merriweather', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 0.04em;
+    }
+    .prism-dash {
+      font-size: 1.6rem;
+      color: var(--gold-mid);
+      font-weight: 300;
+    }
+    .prism-expansion {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.82);
+      letter-spacing: 0.01em;
+    }
+    header .subtitle {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.72);
+      max-width: 580px;
+      font-weight: 300;
+    }
+    .core-question {
+      background: rgba(255,255,255,0.09);
+      border-left: 3px solid var(--gold-mid);
+      padding: 16px 20px;
+      margin-top: 28px;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.97rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.88);
+      max-width: 680px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: white;
+      border-bottom: 2px solid var(--border);
+      padding: 0 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+    nav button {
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--muted);
+      padding: 16px 18px 14px;
+      cursor: pointer;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.2s;
+      margin-bottom: -2px;
+    }
+    nav button:hover { color: var(--slate); }
+    nav button.active {
+      color: var(--navy);
+      border-bottom-color: var(--navy);
+      font-weight: 600;
+    }
+
+    /* ── LAYOUT ── */
+    .content { max-width: 900px; margin: 0 auto; padding: 44px 40px 80px; }
+    section { display: none; animation: fadeUp 0.35s ease; }
+    section.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── TYPOGRAPHY ── */
+    h2 {
+      font-family: 'Merriweather', serif;
+      font-size: 1.7rem;
+      color: var(--slate);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .section-intro {
+      color: var(--muted);
+      font-size: 0.96rem;
+      margin-bottom: 32px;
+      max-width: 680px;
+    }
+    h3 {
+      font-family: 'Merriweather', serif;
+      font-size: 1.22rem;
+      color: var(--slate);
+      margin: 32px 0 10px;
+    }
+    h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin: 20px 0 8px;
+    }
+
+    /* ── FOUNDATION CARDS ── */
+    .foundation-card {
+      border-radius: 10px;
+      padding: 28px 30px;
+      margin: 20px 0;
+      border: 1.5px solid;
+      position: relative;
+    }
+    .foundation-card.atl { background: var(--atl-light); border-color: var(--atl-mid); }
+    .foundation-card.sed { background: var(--sed-light); border-color: var(--sed-mid); }
+    .foundation-card.reg { background: var(--reg-light); border-color: var(--reg-mid); }
+
+    .foundation-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .atl .foundation-tag { background: var(--atl); color: white; }
+    .sed .foundation-tag { background: var(--sed); color: white; }
+    .reg .foundation-tag { background: var(--reg); color: white; }
+
+    .foundation-card h3 { margin-top: 0; }
+    .atl h3 { color: var(--atl); }
+    .sed h3 { color: var(--sed); }
+    .reg h3 { color: var(--reg); }
+
+    .foundation-card .ptklf-ref {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+
+    /* ── INFO BOXES ── */
+    .info-box {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 22px;
+      margin: 14px 0;
+    }
+    .info-box p { font-size: 0.93rem; }
+
+    .callout {
+      padding: 16px 20px;
+      border-radius: 6px;
+      margin: 20px 0;
+      font-size: 0.93rem;
+    }
+    .callout.green { background: var(--reg-light); border-left: 4px solid var(--reg); }
+    .callout.blue { background: var(--atl-light); border-left: 4px solid var(--atl); }
+    .callout.purple { background: var(--sed-light); border-left: 4px solid var(--sed); }
+    .callout.warm { background: var(--warm-light); border-left: 4px solid var(--warm); }
+    .callout.slate { background: var(--slate-light); border-left: 4px solid var(--slate); }
+
+    /* ── OBSERVATION CARDS ── */
+    .obs-domain {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    .obs-domain-header {
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .obs-domain-header h3 { margin: 0; font-size: 1.05rem; }
+    .domain-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-atl { background: var(--atl); }
+    .dot-sed { background: var(--sed); }
+    .dot-reg { background: var(--reg); }
+    .dot-sage { background: var(--sage); }
+
+    .obs-domain-body { padding: 20px 24px; }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+    }
+    .checklist-item:last-of-type { border-bottom: none; }
+    .checklist-item input[type="checkbox"] {
+      margin-top: 3px;
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      accent-color: var(--navy);
+      cursor: pointer;
+    }
+    .checklist-item label {
+      font-size: 0.93rem;
+      cursor: pointer;
+      line-height: 1.5;
+    }
+    .ptklf-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 1px 7px;
+      border-radius: 3px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .tag-atl { background: var(--atl-light); color: var(--atl); }
+    .tag-sed { background: var(--sed-light); color: var(--sed); }
+    .tag-reg { background: var(--reg-light); color: var(--reg); }
+
+    .breakdown-prompt {
+      background: #fffbf0;
+      border: 1px solid #f0e4b0;
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin: 14px 0 4px;
+    }
+    .breakdown-prompt p {
+      font-size: 0.85rem;
+      color: var(--warm);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .breakdown-prompt .guiding {
+      font-size: 0.83rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 70px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.88rem;
+      color: var(--ink);
+      background: white;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    textarea:focus { outline: none; border-color: var(--navy); }
+
+    /* ── COMPARISON ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .compare-card {
+      border-radius: 8px;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+    .compare-before {
+      background: #fdf0f0;
+      border-left: 4px solid #c0392b;
+    }
+    .compare-after {
+      background: var(--reg-light);
+      border-left: 4px solid var(--reg);
+    }
+    .compare-card .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .compare-before .label { color: #c0392b; }
+    .compare-after .label { color: var(--reg); }
+    .compare-card p { line-height: 1.6; }
+    .compare-card .note {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* ── CONTEXT GRID ── */
+    .context-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .context-box {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .context-box .icon { font-size: 1.5rem; margin-bottom: 6px; }
+    .context-box h4 {
+      font-size: 0.82rem;
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--slate);
+      margin: 0 0 4px;
+    }
+    .context-box p { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 8px; border: 1.5px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; background: white; font-size: 0.85rem; }
+    thead tr { background: var(--slate); }
+    th {
+      color: white;
+      padding: 12px 14px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 0.82rem;
+    }
+    td {
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--cream); }
+    .row-atl td:first-child { border-left: 3px solid var(--atl); }
+    .row-sed td:first-child { border-left: 3px solid var(--sed); }
+    .row-reg td:first-child { border-left: 3px solid var(--reg); }
+    .row-group td {
+      background: var(--slate-light);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--slate);
+      padding: 8px 14px;
+    }
+
+    /* ── DECISION ── */
+    .decision-card {
+      border-radius: 10px;
+      padding: 22px 26px;
+      margin: 16px 0;
+      border: 1.5px solid;
+    }
+    .decision-yes { background: #edf7ed; border-color: #81c784; }
+    .decision-no { background: var(--atl-light); border-color: var(--atl-mid); }
+    .decision-maybe { background: #fff8e1; border-color: #ffe082; }
+    .decision-card h3 { margin-top: 0; font-size: 1.05rem; }
+    .decision-yes h3 { color: #2e7d32; }
+    .decision-no h3 { color: var(--atl); }
+    .decision-maybe h3 { color: #f57f17; }
+    .decision-card ul { margin-left: 18px; margin-top: 8px; }
+    .decision-card li { font-size: 0.9rem; margin: 5px 0; }
+
+    /* ── ALIGNMENT SECTION ── */
+    .align-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 14px 0;
+    }
+    .align-card h4 {
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 1rem;
+      color: var(--slate);
+      margin-bottom: 4px;
+    }
+    .align-card .source {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    .align-card p { font-size: 0.9rem; }
+
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .badge-atl { background: var(--atl-light); color: var(--atl); }
+    .badge-sed { background: var(--sed-light); color: var(--sed); }
+    .badge-reg { background: var(--reg-light); color: var(--reg); }
+    .badge-sage { background: var(--sage-light); color: var(--sage); }
+
+    /* ── SUMMARY BOX ── */
+    .summary-section {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 28px;
+      margin: 28px 0;
+    }
+    .summary-section h3 { margin-top: 0; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.7);
+      padding: 20px 40px;
+      font-size: 0.78rem;
+      border-top: 4px solid var(--gold);
+    }
+    .page-footer .footer-district {
+      font-weight: 600;
+      color: var(--gold-mid);
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+
+    /* ── INSTRUMENT COMPONENTS ── */
+    .step-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 28px 0 10px;
+    }
+    .step-num {
+      background: var(--navy);
+      color: white;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* context matrix table */
+    .matrix-wrap { overflow-x: auto; margin: 12px 0 24px; border-radius: 8px; border: 1.5px solid var(--border); }
+    .matrix-table { width: 100%; border-collapse: collapse; background: white; font-size: 0.82rem; min-width: 560px; }
+    .matrix-table thead tr { background: var(--slate); }
+    .matrix-table th { color: white; padding: 10px 12px; text-align: left; font-weight: 500; font-size: 0.78rem; }
+    .matrix-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .matrix-table tr:last-child td { border-bottom: none; }
+    .matrix-table tr:hover td { background: var(--cream); }
+    .matrix-table .ctx-label { font-weight: 600; font-size: 0.83rem; color: var(--slate); white-space: nowrap; }
+
+    /* radio-style checkbox groups */
+    .check-group { display: flex; flex-direction: column; gap: 5px; }
+    .check-group label {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      font-size: 0.82rem;
+      color: var(--ink);
+      cursor: pointer;
+      line-height: 1.4;
+    }
+    .check-group input[type="checkbox"],
+    .check-group input[type="radio"] {
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--navy);
+      width: 14px; height: 14px;
+    }
+
+    /* indicator cluster */
+    .indicator-cluster {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin: 12px 0;
+    }
+    .indicator-cluster .cluster-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .indicator-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .indicator-item:last-child { border-bottom: none; }
+    .indicator-item input[type="checkbox"] {
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--navy);
+      width: 15px; height: 15px;
+    }
+    .indicator-item label { font-size: 0.88rem; cursor: pointer; line-height: 1.45; }
+
+    /* pattern classification */
+    .pattern-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 8px 0;
+    }
+    .pattern-card .domain-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .pattern-card .domain-row:last-child { border-bottom: none; }
+    .domain-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      width: 44px;
+      text-align: center;
+    }
+    .pill-atl { background: var(--atl); color: white; }
+    .pill-sed { background: var(--sed); color: white; }
+    .pill-reg { background: var(--reg); color: white; }
+    .pattern-options { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pattern-option {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+    .pattern-option input { accent-color: var(--navy); }
+
+    /* synthesis box */
+    .synthesis-box {
+      background: white;
+      border: 2px solid var(--navy);
+      border-radius: 10px;
+      padding: 24px 26px;
+      margin: 16px 0;
+    }
+    .synthesis-box .syn-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .synthesis-box .syn-header h3 { margin: 0; font-size: 1.05rem; color: var(--navy); }
+    .synthesis-box .syn-prompt {
+      font-size: 0.83rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 10px;
+      line-height: 1.55;
+    }
+    .synthesis-box textarea { min-height: 120px; border-color: var(--border); }
+    .synthesis-box textarea:focus { border-color: var(--navy); }
+
+    /* UDL note */
+    .udl-def {
+      background: var(--navy-light);
+      border-left: 4px solid var(--navy-mid);
+      border-radius: 0 6px 6px 0;
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      color: var(--slate);
+      margin: 14px 0;
+      font-style: italic;
+    }
+    @media print {
+      nav, header::before, header::after { display: none; }
+      section { display: block !important; page-break-before: always; }
+      section:first-of-type { page-break-before: avoid; }
+      .content { padding: 20px; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      header { padding: 36px 24px; }
+      header h1 { font-size: 1.5rem; }
+      .prism-word { font-size: 1.8rem; }
+      .prism-expansion { font-size: 0.95rem; }
+      .content { padding: 28px 20px 100px; }
+      nav { padding: 0 16px; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .action-bar { padding: 12px 16px; }
+      .student-bar { padding: 8px 16px; }
+    }
+
+    /* ── CONTRAST SELECTORS ── */
+    .contrast-selectors {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 12px 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .contrast-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .contrast-label {
+      font-size: 0.83rem;
+      font-weight: 600;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .contrast-label.best::before {
+      content: '▲';
+      color: var(--reg);
+      font-size: 0.7rem;
+    }
+    .contrast-label.constrained::before {
+      content: '▼';
+      color: #b71c1c;
+      font-size: 0.7rem;
+    }
+    .contrast-selectors select,
+    .driver-rank-card select,
+    .scope-row select {
+      padding: 7px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.85rem;
+      color: var(--ink);
+      background: white;
+      min-width: 200px;
+    }
+    .contrast-selectors select:focus,
+    .driver-rank-card select:focus,
+    .scope-row select:focus { outline: none; border-color: var(--navy); }
+    .contrast-warning {
+      display: none;
+      font-size: 0.8rem;
+      color: #b45309;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 5px;
+      padding: 7px 12px;
+      margin-top: 2px;
+    }
+    .contrast-warning.visible { display: block; }
+
+    /* ── DRIVER RANKING ── */
+    .driver-rank-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 12px 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .driver-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .driver-label {
+      font-size: 0.83rem;
+      font-weight: 600;
+      min-width: 180px;
+    }
+    .driver-label.primary::before { content: '① '; color: var(--navy); }
+    .driver-label.secondary::before { content: '② '; color: var(--muted); }
+    .required-star { color: #c0392b; margin-left: 2px; }
+
+    /* ── SUPPORT CARD ── */
+    .support-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 12px 0 24px;
+    }
+    .support-section { padding: 16px 20px; }
+    .udl-section { border-bottom: 1px solid var(--border); background: var(--reg-light); }
+    .ind-section { background: white; }
+    .support-header {
+      font-size: 0.83rem;
+      font-weight: 700;
+      color: var(--slate);
+      margin-bottom: 12px;
+    }
+    .support-cap {
+      font-weight: 400;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+    .support-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 6px 16px;
+    }
+    .support-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 7px;
+      font-size: 0.84rem;
+      cursor: pointer;
+      line-height: 1.4;
+      padding: 3px 0;
+    }
+    .support-item input { margin-top: 2px; flex-shrink: 0; accent-color: var(--navy); }
+    .support-warn {
+      display: none;
+      font-size: 0.78rem;
+      color: #b45309;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    .support-warn.visible { display: block; }
+    .ind-specifier {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .spec-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 20px;
+    }
+
+    /* ── SCOPE ROW ── */
+    .scope-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 20px;
+      margin: 12px 0 24px;
+    }
+
+    /* ── SETUP BAR ── */
+    /* ── STUDENT BAR ── */
+    .student-bar {
+      background: var(--slate-light);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 40px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.85rem;
+    }
+    .student-bar label { font-weight: 600; color: var(--slate); white-space: nowrap; }
+    .student-bar input[type="text"] {
+      width: 220px; padding: 5px 10px;
+      border: 1.5px solid var(--border); border-radius: 5px; font-size: 0.85rem;
+    }
+    .student-bar input:focus { outline: none; border-color: var(--navy); }
+
+    /* ── ACTION BAR ── */
+    .action-bar {
+      background: white;
+      border-top: 2px solid var(--border);
+      padding: 12px 40px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      position: sticky; bottom: 0; z-index: 99;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+    }
+    .btn {
+      padding: 9px 20px; border-radius: 6px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; border: none; transition: all 0.15s;
+    }
+    .btn-primary { background: var(--navy); color: white; }
+    .btn-primary:hover { background: var(--navy-mid); }
+    .btn-primary:disabled { background: var(--muted); cursor: not-allowed; opacity: 0.7; }
+    .btn-danger { background: white; color: #b71c1c; border: 1.5px solid #e57373; }
+    .btn-danger:hover { background: #fff5f5; }
+    .save-status {
+      font-size: 0.78rem; color: var(--muted);
+      font-style: italic; margin-left: auto;
+      transition: color 0.3s;
+    }
+    .save-status.saved { color: #2e7d32; }
+
+    /* ── SUMMARY OUTPUT ── */
+    .summary-output {
+      display: none;
+      background: white;
+      border: 2px solid var(--navy);
+      border-radius: 10px;
+      padding: 22px 26px;
+      margin-top: 24px;
+    }
+    .summary-output.visible { display: block; }
+    .summary-output h3 {
+      color: var(--navy); font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    .output-text {
+      font-size: 0.92rem; line-height: 1.72;
+      color: var(--ink); white-space: pre-wrap;
+      border: 1.5px solid var(--border); border-radius: 6px;
+      padding: 14px 16px; background: var(--cream);
+      min-height: 60px;
+    }
+    .output-attribution {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-style: italic;
+      border-top: 1px solid var(--border);
+      margin-top: 10px;
+      padding-top: 8px;
+    }
+    .teacher-notes-block {
+      margin-top: 16px;
+      border: 1.5px solid var(--gold-mid);
+      border-radius: 7px;
+      overflow: hidden;
+      background: var(--gold-light);
+    }
+    .teacher-notes-header {
+      background: var(--gold-mid);
+      color: var(--slate);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 7px 14px;
+      letter-spacing: 0.02em;
+    }
+    .teacher-notes-text {
+      font-size: 0.88rem;
+      color: var(--ink);
+      padding: 12px 14px;
+      font-style: italic;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+    .teacher-notes-caption {
+      font-size: 0.75rem;
+      color: var(--muted);
+      padding: 0 14px 10px;
+      line-height: 1.5;
+    }
+    .output-actions { display: flex; gap: 10px; margin-top: 10px; }
+    .btn-copy {
+      background: var(--slate-light); color: var(--slate);
+      border: 1.5px solid var(--border);
+      padding: 7px 16px; border-radius: 5px;
+      font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    }
+    .btn-copy:hover { background: var(--border); }
+    .generating {
+      display: none; align-items: center; gap: 8px;
+      font-size: 0.85rem; color: var(--muted); font-style: italic;
+      margin-top: 14px;
+    }
+    .generating.visible { display: flex; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 14px; height: 14px;
+      border: 2px solid var(--border); border-top-color: var(--navy);
+      border-radius: 50%; animation: spin 0.8s linear infinite; flex-shrink: 0;
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4); z-index: 999;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.visible { display: flex; }
+    .modal-box {
+      background: white; border-radius: 10px;
+      padding: 28px 30px; max-width: 360px; width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+    .modal-box h3 { color: var(--navy); margin-bottom: 8px; font-size: 1rem; }
+    .modal-box p { font-size: 0.88rem; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+    /* ── DIVERGENCE GATE (v1.1) ── */
+    .divergence-gate {
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin: 16px 0 24px;
+    }
+    .gate-question {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 14px;
+    }
+    .gate-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .gate-btn {
+      padding: 9px 20px;
+      border-radius: 7px;
+      border: 2px solid var(--border);
+      background: white;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--ink);
+    }
+    .gate-btn:hover { border-color: var(--navy-mid); color: var(--navy); }
+    .gate-btn.active-yes {
+      background: var(--reg-light);
+      border-color: var(--reg);
+      color: var(--reg);
+    }
+    .gate-btn.active-no {
+      background: var(--gold-light);
+      border-color: var(--gold);
+      color: #7a5800;
+    }
+    .gate-note { margin-top: 12px; }
+    .mini-matrix {
+      background: var(--gold-light);
+      border: 1.5px dashed var(--gold-mid);
+      border-radius: 10px;
+      padding: 16px 20px 20px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="district-bar">Folsom Cordova Unified School District · Special Education · Early Childhood Assessment Team</div>
+  <div class="header-inner">
+    <div class="eyebrow">FCUSD Early Childhood Assessment Teams</div>
+    <div class="prism-lockup">
+      <span class="prism-word">PRISM</span>
+      <span class="prism-dash">—</span>
+      <span class="prism-expansion">Participation Routines &amp; Inclusive Supports Map</span>
+    </div>
+    <p class="subtitle">A structured observation guide for P/TK participation planning · A participation mapping tool for inclusive early childhood settings</p>
+    <div class="core-question">
+      "Does this child need specialized instruction to access what peers access naturally — or do universal supports in this classroom already provide what they need?"
+    </div>
+  </div>
+</header>
+
+<!-- STUDENT NAME BAR -->
+<div class="student-bar">
+  <label for="student-name">Student (initials or ID):</label>
+  <input type="text" id="student-name" placeholder="e.g. A.M. · Fall 2025" maxlength="60">
+</div>
+
+<nav>
+  <button onclick="show('start')" class="active">Start Here</button>
+  <button onclick="show('observation')">Observation</button>
+  <button onclick="show('atl')">ATL</button>
+  <button onclick="show('sed')">SED</button>
+  <button onclick="show('reg')">REG</button>
+  <button onclick="show('synthesis')">Synthesis</button>
+  <button onclick="show('language')">Documentation</button>
+  <button onclick="show('crosswalk')">AEPS-3 Crosswalk</button>
+  <button onclick="show('alignment')">Framework Alignment</button>
+</nav>
+
+<!-- STICKY ACTION BAR -->
+<div class="action-bar">
+  <button class="btn btn-primary" id="generate-btn" onclick="generateSummary()">⚡ Generate Participation Summary</button>
+  <button class="btn btn-danger" onclick="showClearModal()">✕ Clear Assessment</button>
+  <span class="save-status" id="save-status">Not yet saved</span>
+</div>
+
+<!-- CLEAR CONFIRM MODAL -->
+<div class="modal-overlay" id="clear-modal">
+  <div class="modal-box">
+    <h3>Clear this assessment?</h3>
+    <p>All checkboxes, notes, and the student name will be reset. This cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn" style="background:var(--slate-light);color:var(--slate);border:1.5px solid var(--border);" onclick="hideClearModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmClear()">Clear Assessment</button>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ═══════════════════════════════════════════
+       START HERE
+  ═══════════════════════════════════════════ -->
+  <section id="start" class="active">
+    <h2>Start Here</h2>
+    <p class="section-intro">This guide helps you document what you already see. No new framework to learn — just a structured way to capture participation patterns that protect students across every team, placement, and transition that follows.</p>
+
+    <div class="callout warm">
+      <strong>You already have the data.</strong> The child who stayed engaged because the group was small. The one who communicated because the routine was familiar. The one who withdrew when the room got loud. This guide helps you write it down in a way the next team can use.
+    </div>
+
+    <h3>How This Guide Is Organized</h3>
+    <p>The three PTKLF foundation areas — <strong>Approaches to Learning (ATL)</strong>, <strong>Social-Emotional Development (SED)</strong>, and <strong>Self-Regulation (REG)</strong> — are the spine of this tool. Each section asks you to observe what you see in structured vs. less structured moments, and to document the conditions that made participation possible (or that made it break down).</p>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 24px 0;">
+      <div class="foundation-card atl" style="margin: 0;">
+        <span class="foundation-tag">ATL</span>
+        <h3 style="font-size: 1rem;">Approaches to Learning</h3>
+        <p style="font-size: 0.85rem;">Curiosity, persistence, attention, flexibility, and engagement with learning</p>
+      </div>
+      <div class="foundation-card sed" style="margin: 0;">
+        <span class="foundation-tag">SED</span>
+        <h3 style="font-size: 1rem;">Social-Emotional Development</h3>
+        <p style="font-size: 0.85rem;">Identity, relationships with adults and peers, social participation and play</p>
+      </div>
+      <div class="foundation-card reg" style="margin: 0;">
+        <span class="foundation-tag">REG</span>
+        <h3 style="font-size: 1rem;">Self-Regulation</h3>
+        <p style="font-size: 0.85rem;">Emotional regulation, attention control, and executive function in context</p>
+      </div>
+    </div>
+
+    <h3>What "Conditions" Means</h3>
+    <p>Conditions are the specific features already present in every classroom — group size, adult proximity, visual structure, task demands, sensory load, routine predictability. When you notice that a child participates in one context but not another, the difference between those contexts <em>is the finding</em>.</p>
+
+    <div class="callout slate" style="margin-top: 20px;">
+      <strong>Same child. Same week. Same classroom.</strong> She was engaged in small group with the visual schedule. She withdrew in loud free play without adult support. The variability isn't noise — it's data. Document what changed between those two moments.
+    </div>
+
+    <h3>How to Use This Instrument (v1.1)</h3>
+    <div class="info-box">
+      <p><strong>Observation tab:</strong> Complete the shared Context Participation Matrix, forced contrast selectors, and driver ranking once — these apply across all three domains.</p>
+    </div>
+    <div class="info-box">
+      <p><strong>ATL / SED / REG tabs:</strong> Check the indicator cluster for each domain. Each tab asks: "Does [domain] follow the same context pattern selected above?" If yes, it inherits the shared observation. If no, a small mini-matrix opens for that domain only.</p>
+    </div>
+    <div class="info-box">
+      <p><strong>Synthesis tab:</strong> Classify the participation pattern per domain, complete the support profile, select observation scope, add teacher notes, then hit Generate.</p>
+    </div>
+
+    <div class="callout green" style="margin-top: 28px;">
+      <strong>A note on language:</strong> This guide uses participation language rather than deficit language. Instead of "cannot follow directions," you'll write "follows 2-step directions with visual supports in small group; needs adult prompting in whole-class contexts." That language protects your student — and tells the next team exactly where to start.
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       OBSERVATION (shared — v1.1)
+  ═══════════════════════════════════════════ -->
+  <section id="observation">
+    <h2>Observation</h2>
+    <p class="section-intro">Complete this section once. The context participation matrix, forced contrast, and driver ranking apply across ATL, SED, and REG — because the environment is the variable, not the domain. A child who struggles in whole group struggles in whole group for all three.</p>
+
+    <div class="callout slate" style="margin-bottom: 20px;">
+      <strong>Why shared?</strong> In preschool and TK, classroom context drives participation across all three domains simultaneously. Running three separate matrices produces redundant data, not additional signal. The indicator clusters in each domain tab capture the domain-specific picture.
+    </div>
+
+    <div class="step-label"><span class="step-num">1</span> Context Participation Matrix</div>
+    <div class="udl-def">Universal classroom supports include predictable routines, visual schedules, developmentally appropriate small groups, structured centers, and general scaffolds available to all students.</div>
+    <div class="matrix-wrap">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Context</th>
+            <th>Participation Level</th>
+            <th>Access Within Classroom Structures</th>
+            <th>Relative to Peers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ctx-label">Whole Group</td>
+            <td><div class="check-group">
+              <label><input type="radio"> High</label>
+              <label><input type="radio"> Moderate</label>
+              <label><input type="radio"> Limited</label>
+            </div></td>
+            <td><div class="check-group">
+              <label><input type="radio"> Accesses within universal supports</label>
+              <label><input type="radio"> Access improves when structure is optimized</label>
+              <label><input type="radio"> Requires individualized adult support</label>
+            </div></td>
+            <td><div class="check-group">
+              <label><input type="radio"> Similar</label>
+              <label><input type="radio"> More support needed</label>
+              <label><input type="radio"> Significantly different</label>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="ctx-label">Small Group</td>
+            <td><div class="check-group">
+              <label><input type="radio"> High</label>
+              <label><input type="radio"> Moderate</label>
+              <label><input type="radio"> Limited</label>
+            </div></td>
+            <td><div class="check-group">
+              <label><input type="radio"> Accesses within universal supports</label>
+              <label><input type="radio"> Access improves when structure is optimized</label>
+              <label><input type="radio"> Requires individualized adult support</label>
+            </div></td>
+            <td><div class="check-group">
+              <label><input type="radio"> Similar</label>
+              <label><input type="radio"> More support needed</label>
+              <label><input type="radio"> Significantly different</label>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="ctx-label">Free Play / Centers</td>
+            <td><div class="check-group">
+              <label><input type="radio"> High</label>
+              <label><input type="radio"> Moderate</label>
+              <label><input type="radio"> Limited</label>
+            </div></td>
+            <td><div class="check-group">
+              <label><input type="radio"> Accesses within universal supports</label>
+              <label><input type="radio"> Access improves when structure is optimized</label>
+              <label><input type="radio"> Requires individualized adult support</label>
+            </div></td>
+            <td><div class="check-group">
+              <label><input type="radio"> Similar</label>
+              <label><input type="radio"> More support needed</label>
+              <label><input type="radio"> Significantly different</label>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="ctx-label">Transitions</td>
+            <td><div class="check-group">
+              <label><input type="radio"> High</label>
+              <label><input type="radio"> Moderate</label>
+              <label><input type="radio"> Limited</label>
+            </div></td>
+            <td><div class="check-group">
+              <label><input type="radio"> Accesses within universal supports</label>
+              <label><input type="radio"> Access improves when structure is optimized</label>
+              <label><input type="radio"> Requires individualized adult support</label>
+            </div></td>
+            <td><div class="check-group">
+              <label><input type="radio"> Similar</label>
+              <label><input type="radio"> More support needed</label>
+              <label><input type="radio"> Significantly different</label>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="step-label"><span class="step-num">2</span> Forced Contrast</div>
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">Select the overall best and most constrained context. This will be inherited by all three domains unless a domain explicitly diverges (set in that domain's tab).</p>
+    <div class="contrast-selectors" id="shared-contrast">
+      <div class="contrast-row">
+        <label class="contrast-label best">Best access context <span class="required-star">*</span></label>
+        <select id="shared-best" onchange="checkContrast('shared')">
+          <option value="">— select —</option>
+          <option value="whole_group">Whole Group</option>
+          <option value="small_group">Small Group</option>
+          <option value="free_play_centers">Free Play / Centers</option>
+          <option value="transitions">Transitions</option>
+        </select>
+      </div>
+      <div class="contrast-row">
+        <label class="contrast-label constrained">Most constrained context <span class="required-star">*</span></label>
+        <select id="shared-constrained" onchange="checkContrast('shared')">
+          <option value="">— select —</option>
+          <option value="whole_group">Whole Group</option>
+          <option value="small_group">Small Group</option>
+          <option value="free_play_centers">Free Play / Centers</option>
+          <option value="transitions">Transitions</option>
+        </select>
+      </div>
+      <div class="contrast-warning" id="shared-contrast-warn">If best and most constrained are the same, consider whether another context better captures the contrast.</div>
+    </div>
+
+    <div class="step-label"><span class="step-num">3</span> Environmental Driver Ranking</div>
+    <div class="callout slate" style="margin: 8px 0 14px; font-size: 0.88rem;">
+      <strong>What is an environmental driver?</strong> A driver is the classroom condition that best explains <em>why</em> participation shifts between contexts — not a trait of the child, but a feature of the setting. Identifying the primary driver focuses intervention on the environment, not the child.
+    </div>
+    <p style="font-size:0.88rem; color:var(--muted); margin-bottom: 12px;">Select the primary driver first. Secondary is optional — cannot match primary.</p>
+    <div class="driver-rank-card">
+      <div class="driver-row">
+        <label class="driver-label primary">Primary driver <span class="required-star">*</span></label>
+        <select id="driver-primary" onchange="checkDrivers()">
+          <option value="">— select —</option>
+          <option value="group_size_peer_density">Group size / peer density</option>
+          <option value="sensory_load">Sensory load (noise, movement, proximity)</option>
+          <option value="language_task_complexity">Language or task complexity</option>
+          <option value="transition_unpredictability">Transition unpredictability</option>
+          <option value="reduced_adult_structure">Reduced adult structure</option>
+        </select>
+      </div>
+      <div class="driver-row">
+        <label class="driver-label secondary">Secondary driver <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+        <select id="driver-secondary" onchange="checkDrivers()">
+          <option value="">— none —</option>
+          <option value="group_size_peer_density">Group size / peer density</option>
+          <option value="sensory_load">Sensory load (noise, movement, proximity)</option>
+          <option value="language_task_complexity">Language or task complexity</option>
+          <option value="transition_unpredictability">Transition unpredictability</option>
+          <option value="reduced_adult_structure">Reduced adult structure</option>
+        </select>
+      </div>
+      <div class="contrast-warning" id="driver-warn">Secondary driver cannot be the same as primary. Please choose a different one.</div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       ATL (indicators + divergence gate — v1.1)
+  ═══════════════════════════════════════════ -->
+  <section id="atl">
+    <h2>Approaches to Learning (ATL)</h2>
+    <p class="section-intro">How this child engages with learning — curiosity, persistence, attention, and flexibility. Complete the indicator cluster, then answer the divergence gate question.</p>
+
+    <div class="foundation-card atl">
+      <span class="foundation-tag">PTKLF · ATL</span>
+      <h3>What the foundations describe</h3>
+      <p class="ptklf-ref">California PTKLF (2024) — Curiosity and Initiative; Persistence and Problem-Solving; Attention and Engagement; Flexibility and Risk-Taking</p>
+      <p>ATL is shaped by environment, task familiarity, sensory load, and adult support — not just by the child's capacity. When ATL looks different across contexts, that variability is the data.</p>
+    </div>
+
+    <div class="callout blue">
+      <strong>DRDP:</strong> ATL maps to the <em>ATL-REG</em> strand — measures like "Curiosity and Initiative," "Attention Maintenance," and "Persistence." If you have DRDP data, it directly supports what you're documenting here.
+    </div>
+
+    <div class="step-label"><span class="step-num">1</span> ATL Indicator Cluster — check those consistently observed</div>
+    <div class="indicator-cluster">
+      <div class="cluster-title">Approaches to Learning <span class="ptklf-tag tag-atl" style="vertical-align:middle;">PTKLF · ATL</span></div>
+      <div class="indicator-item"><input type="checkbox" id="atl-i1"><label for="atl-i1">Sustains attention to adult-led activity <span class="ptklf-tag tag-atl">Attention</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="atl-i2"><label for="atl-i2">Initiates and sustains engagement in chosen activity <span class="ptklf-tag tag-atl">Initiative · Persistence</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="atl-i3"><label for="atl-i3">Returns to task after interruption <span class="ptklf-tag tag-atl">Persistence</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="atl-i4"><label for="atl-i4">Transitions between activities without escalation <span class="ptklf-tag tag-atl">Flexibility</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="atl-i5"><label for="atl-i5">Demonstrates flexible problem-solving when challenged <span class="ptklf-tag tag-atl">Problem-Solving</span></label></div>
+    </div>
+
+    <div class="step-label"><span class="step-num">2</span> Divergence Gate — ATL</div>
+    <div class="divergence-gate" id="atl-gate">
+      <p class="gate-question">Does ATL participation follow the same context pattern selected in the Observation tab?</p>
+      <div class="gate-buttons">
+        <button class="gate-btn gate-yes" id="atl-gate-yes" onclick="setGate('atl','yes')">Yes — follows same pattern</button>
+        <button class="gate-btn gate-no" id="atl-gate-no" onclick="setGate('atl','no')">No — context pattern differs</button>
+      </div>
+      <div class="gate-note" id="atl-gate-note" style="display:none;">
+        <p style="font-size:0.84rem;color:var(--muted);margin-bottom:10px;">ATL context pattern differs from the shared observation. Complete the mini-matrix below.</p>
+      </div>
+    </div>
+
+    <!-- ATL mini-matrix (hidden unless gate=no) -->
+    <div class="mini-matrix" id="atl-mini" style="display:none;">
+      <div class="step-label" style="margin-top:16px;"><span class="step-num" style="background:var(--atl);">+</span> ATL Context — Forced Contrast</div>
+      <div class="contrast-selectors">
+        <div class="contrast-row">
+          <label class="contrast-label best">Best access context (ATL)</label>
+          <select id="atl-best" onchange="checkContrast('atl')">
+            <option value="">— select —</option>
+            <option value="whole_group">Whole Group</option>
+            <option value="small_group">Small Group</option>
+            <option value="free_play_centers">Free Play / Centers</option>
+            <option value="transitions">Transitions</option>
+          </select>
+        </div>
+        <div class="contrast-row">
+          <label class="contrast-label constrained">Most constrained context (ATL)</label>
+          <select id="atl-constrained" onchange="checkContrast('atl')">
+            <option value="">— select —</option>
+            <option value="whole_group">Whole Group</option>
+            <option value="small_group">Small Group</option>
+            <option value="free_play_centers">Free Play / Centers</option>
+            <option value="transitions">Transitions</option>
+          </select>
+        </div>
+        <div class="contrast-warning" id="atl-contrast-warn">If best and most constrained are the same, consider whether another context better captures the contrast.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SED (indicators + divergence gate — v1.1)
+  ═══════════════════════════════════════════ -->
+  <section id="sed">
+    <h2>Social-Emotional Development (SED)</h2>
+    <p class="section-intro">How this child relates to adults, builds peer relationships, and participates in the social life of the classroom. Complete the indicator cluster, then answer the divergence gate question.</p>
+
+    <div class="foundation-card sed">
+      <span class="foundation-tag">PTKLF · SED</span>
+      <h3>What the foundations describe</h3>
+      <p class="ptklf-ref">California PTKLF (2024) — Identity and Belonging; Relationships with Adults; Relationships with Peers; Social Participation; Empathy and Understanding of Others</p>
+      <p>Social participation that requires adult mediation is different from participation that happens naturally — that difference tells us about access, not character.</p>
+    </div>
+
+    <div class="callout blue">
+      <strong>DRDP:</strong> SED maps to the <em>SED</em> strand — measures like "Identity of Self in Relation to Others," "Relationships and Social Interactions with Familiar Adults," and "Cooperative Play."
+    </div>
+
+    <div class="step-label"><span class="step-num">1</span> SED Indicator Cluster — check those consistently observed</div>
+    <div class="indicator-cluster">
+      <div class="cluster-title">Social-Emotional Development <span class="ptklf-tag tag-sed" style="vertical-align:middle;">PTKLF · SED</span></div>
+      <div class="indicator-item"><input type="checkbox" id="sed-i1"><label for="sed-i1">Engages with familiar adults <span class="ptklf-tag tag-sed">Adult Relationships</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="sed-i2"><label for="sed-i2">Initiates or responds to peer interaction <span class="ptklf-tag tag-sed">Peer Relationships</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="sed-i3"><label for="sed-i3">Maintains reciprocal interaction beyond a single exchange <span class="ptklf-tag tag-sed">Social Participation</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="sed-i4"><label for="sed-i4">Participates in shared classroom routines <span class="ptklf-tag tag-sed">Belonging</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="sed-i5"><label for="sed-i5">Navigates minor peer conflict with or without adult support <span class="ptklf-tag tag-sed">Empathy</span></label></div>
+    </div>
+
+    <div class="step-label"><span class="step-num">2</span> Divergence Gate — SED</div>
+    <div class="divergence-gate" id="sed-gate">
+      <p class="gate-question">Does SED participation follow the same context pattern selected in the Observation tab?</p>
+      <div class="gate-buttons">
+        <button class="gate-btn gate-yes" id="sed-gate-yes" onclick="setGate('sed','yes')">Yes — follows same pattern</button>
+        <button class="gate-btn gate-no" id="sed-gate-no" onclick="setGate('sed','no')">No — context pattern differs</button>
+      </div>
+      <div class="gate-note" id="sed-gate-note" style="display:none;">
+        <p style="font-size:0.84rem;color:var(--muted);margin-bottom:10px;">SED context pattern differs from the shared observation. Complete the mini-matrix below.</p>
+      </div>
+    </div>
+
+    <div class="mini-matrix" id="sed-mini" style="display:none;">
+      <div class="step-label" style="margin-top:16px;"><span class="step-num" style="background:var(--sed);">+</span> SED Context — Forced Contrast</div>
+      <div class="contrast-selectors">
+        <div class="contrast-row">
+          <label class="contrast-label best">Best access context (SED)</label>
+          <select id="sed-best" onchange="checkContrast('sed')">
+            <option value="">— select —</option>
+            <option value="whole_group">Whole Group</option>
+            <option value="small_group">Small Group</option>
+            <option value="free_play_centers">Free Play / Centers</option>
+            <option value="transitions">Transitions</option>
+          </select>
+        </div>
+        <div class="contrast-row">
+          <label class="contrast-label constrained">Most constrained context (SED)</label>
+          <select id="sed-constrained" onchange="checkContrast('sed')">
+            <option value="">— select —</option>
+            <option value="whole_group">Whole Group</option>
+            <option value="small_group">Small Group</option>
+            <option value="free_play_centers">Free Play / Centers</option>
+            <option value="transitions">Transitions</option>
+          </select>
+        </div>
+        <div class="contrast-warning" id="sed-contrast-warn">If best and most constrained are the same, consider whether another context better captures the contrast.</div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       REG (indicators + divergence gate — v1.1)
+  ═══════════════════════════════════════════ -->
+  <section id="reg">
+    <h2>Self-Regulation (REG)</h2>
+    <p class="section-intro">How this child manages emotional and behavioral states across classroom demands. Complete the indicator cluster, then answer the divergence gate question.</p>
+
+    <div class="foundation-card reg">
+      <span class="foundation-tag">PTKLF · REG</span>
+      <h3>What the foundations describe</h3>
+      <p class="ptklf-ref">California PTKLF (2024) — Emotional and Behavioral Regulation; Attention Control; Inhibitory Control; Cognitive Flexibility</p>
+      <p>Self-regulation is deeply context-dependent. The same child who manages transitions in small group may escalate in whole group. That contrast is the clinical finding — not a contradiction.</p>
+    </div>
+
+    <div class="callout blue">
+      <strong>DRDP:</strong> REG maps to the <em>ATL-REG</em> strand — measures like "Regulation of Attention," "Inhibitory Control," and "Emotional and Behavioral Self-Regulation."
+    </div>
+
+    <div class="step-label"><span class="step-num">1</span> REG Indicator Cluster — check those consistently observed</div>
+    <div class="indicator-cluster">
+      <div class="cluster-title">Self-Regulation <span class="ptklf-tag tag-reg" style="vertical-align:middle;">PTKLF · REG</span></div>
+      <div class="indicator-item"><input type="checkbox" id="reg-i1"><label for="reg-i1">Returns to calm with available co-regulation supports <span class="ptklf-tag tag-reg">Emotional Reg</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="reg-i2"><label for="reg-i2">Tolerates predictable transitions <span class="ptklf-tag tag-reg">Behavioral Reg</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="reg-i3"><label for="reg-i3">Sustains attention without frequent redirection <span class="ptklf-tag tag-reg">Attention Control</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="reg-i4"><label for="reg-i4">Manages the sensory demands of typical classroom environments <span class="ptklf-tag tag-reg">Sensory Reg</span></label></div>
+      <div class="indicator-item"><input type="checkbox" id="reg-i5"><label for="reg-i5">Follows safety and group expectations <span class="ptklf-tag tag-reg">Inhibitory Control</span></label></div>
+    </div>
+
+    <div class="step-label"><span class="step-num">2</span> Divergence Gate — REG</div>
+    <div class="divergence-gate" id="reg-gate">
+      <p class="gate-question">Does REG participation follow the same context pattern selected in the Observation tab?</p>
+      <div class="gate-buttons">
+        <button class="gate-btn gate-yes" id="reg-gate-yes" onclick="setGate('reg','yes')">Yes — follows same pattern</button>
+        <button class="gate-btn gate-no" id="reg-gate-no" onclick="setGate('reg','no')">No — context pattern differs</button>
+      </div>
+      <div class="gate-note" id="reg-gate-note" style="display:none;">
+        <p style="font-size:0.84rem;color:var(--muted);margin-bottom:10px;">REG context pattern differs from the shared observation. Complete the mini-matrix below.</p>
+      </div>
+    </div>
+
+    <div class="mini-matrix" id="reg-mini" style="display:none;">
+      <div class="step-label" style="margin-top:16px;"><span class="step-num" style="background:var(--reg);">+</span> REG Context — Forced Contrast</div>
+      <div class="contrast-selectors">
+        <div class="contrast-row">
+          <label class="contrast-label best">Best access context (REG)</label>
+          <select id="reg-best" onchange="checkContrast('reg')">
+            <option value="">— select —</option>
+            <option value="whole_group">Whole Group</option>
+            <option value="small_group">Small Group</option>
+            <option value="free_play_centers">Free Play / Centers</option>
+            <option value="transitions">Transitions</option>
+          </select>
+        </div>
+        <div class="contrast-row">
+          <label class="contrast-label constrained">Most constrained context (REG)</label>
+          <select id="reg-constrained" onchange="checkContrast('reg')">
+            <option value="">— select —</option>
+            <option value="whole_group">Whole Group</option>
+            <option value="small_group">Small Group</option>
+            <option value="free_play_centers">Free Play / Centers</option>
+            <option value="transitions">Transitions</option>
+          </select>
+        </div>
+        <div class="contrast-warning" id="reg-contrast-warn">If best and most constrained are the same, consider whether another context better captures the contrast.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="synthesis">
+    <h2>Synthesis</h2>
+    <p class="section-intro">Complete after finishing all three domain tabs. Driver ranking was completed in the Observation tab. Steps here: Pattern Classification, Support Profile, Scope, and synthesis narrative.</p>
+    <div class="step-label"><span class="step-num">1</span> Domain Pattern Classification</div>
+    <p style="font-size:0.88rem; color:var(--muted); margin-bottom: 10px;">For each domain, participation is:</p>
+    <div class="pattern-card">
+      <div class="domain-row">
+        <span class="domain-pill pill-atl">ATL</span>
+        <div class="pattern-options">
+          <label class="pattern-option"><input type="radio"> Consistent across contexts</label>
+          <label class="pattern-option"><input type="radio"> Context-dependent, supported by universal structures</label>
+          <label class="pattern-option"><input type="radio"> Context-dependent, requires individualized adult support</label>
+        </div>
+      </div>
+      <div class="domain-row">
+        <span class="domain-pill pill-sed">SED</span>
+        <div class="pattern-options">
+          <label class="pattern-option"><input type="radio"> Consistent across contexts</label>
+          <label class="pattern-option"><input type="radio"> Context-dependent, supported by universal structures</label>
+          <label class="pattern-option"><input type="radio"> Context-dependent, requires individualized adult support</label>
+        </div>
+      </div>
+      <div class="domain-row">
+        <span class="domain-pill pill-reg">REG</span>
+        <div class="pattern-options">
+          <label class="pattern-option"><input type="radio"> Consistent across contexts</label>
+          <label class="pattern-option"><input type="radio"> Context-dependent, supported by universal structures</label>
+          <label class="pattern-option"><input type="radio"> Context-dependent, requires individualized adult support</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-label"><span class="step-num">2</span> Support Profile</div>
+    <p style="font-size:0.88rem; color:var(--muted); margin-bottom: 12px;">Separate what's universally available from what's individually planned. This distinction determines what language is appropriate in Present Levels.</p>
+
+    <div class="support-card">
+      <div class="support-section udl-section">
+        <div class="support-header">UDL / Universal supports present <span class="support-cap">(select up to 3)</span></div>
+        <div class="support-grid">
+          <label class="support-item"><input type="checkbox" class="udl-cb" id="udl1"> Visual schedule</label>
+          <label class="support-item"><input type="checkbox" class="udl-cb" id="udl2"> First/then board</label>
+          <label class="support-item"><input type="checkbox" class="udl-cb" id="udl3"> Predictable routines</label>
+          <label class="support-item"><input type="checkbox" class="udl-cb" id="udl4"> Clear expectations posted</label>
+          <label class="support-item"><input type="checkbox" class="udl-cb" id="udl5"> Access to calming area</label>
+          <label class="support-item"><input type="checkbox" class="udl-cb" id="udl6"> Peer modeling</label>
+          <label class="support-item"><input type="checkbox" class="udl-cb" id="udl7"> Reduced clutter / sensory</label>
+          <label class="support-item"><input type="checkbox" class="udl-cb" id="udl8"> Small group structures</label>
+        </div>
+        <div class="support-warn" id="udl-warn">Select up to 3 that are most relevant.</div>
+      </div>
+
+      <div class="support-section ind-section">
+        <div class="support-header">Individually planned supports required <span class="support-cap">(select up to 2)</span></div>
+        <div class="support-grid">
+          <label class="support-item"><input type="checkbox" class="ind-cb" id="ind1"> 1:1 adult proximity beyond typical</label>
+          <label class="support-item"><input type="checkbox" class="ind-cb" id="ind2"> Individualized prompting plan</label>
+          <label class="support-item"><input type="checkbox" class="ind-cb" id="ind3"> Individualized sensory plan</label>
+          <label class="support-item"><input type="checkbox" class="ind-cb" id="ind4"> Individualized communication system</label>
+        </div>
+        <div class="support-warn" id="ind-warn">Select up to 2.</div>
+        <!-- Micro-specifier: only shown when any ind-cb is checked -->
+        <div class="ind-specifier" id="ind-specifier" style="display:none;">
+          <label style="font-size:0.83rem;font-weight:600;color:var(--slate);display:block;margin-bottom:8px;">Individualized support type <span class="required-star">*</span></label>
+          <div class="spec-options">
+            <label class="support-item"><input type="radio" name="ind-type" id="spec-proximity" value="adult_proximity"> Adult proximity</label>
+            <label class="support-item"><input type="radio" name="ind-type" id="spec-plan" value="individual_plan"> Individual plan</label>
+            <label class="support-item"><input type="radio" name="ind-type" id="spec-instruction" value="specialized_instruction"> Specialized instruction</label>
+            <label class="support-item"><input type="radio" name="ind-type" id="spec-aac" value="assistive_communication"> Assistive communication</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-label"><span class="step-num">3</span> Observation Scope</div>
+    <div class="scope-row">
+      <label for="obs-scope" style="font-size:0.88rem;font-weight:600;color:var(--slate);">This observation reflects:</label>
+      <select id="obs-scope">
+        <option value="">— select —</option>
+        <option value="full_day">Full day / multiple routines</option>
+        <option value="partial_day">Partial day</option>
+        <option value="specific_routines">Specific routines only</option>
+        <option value="report_based">Report-based (no direct observation)</option>
+        <option value="other_setting">Other setting (home / daycare info only)</option>
+      </select>
+    </div>
+
+    <div class="step-label"><span class="step-num">4</span> Participation Pattern Synthesis</div>
+    <div class="synthesis-box">
+      <div class="syn-header">
+        <div style="width:12px;height:12px;background:var(--gold);border-radius:50%;flex-shrink:0;"></div>
+        <h3>Teacher Observation Notes</h3>
+      </div>
+      <p class="syn-prompt">
+        Write what you observe in your own words — no special language required.<br>
+        Describe what you see across contexts: when the child is most engaged, when access breaks down, what seems to help.<br>
+        <strong>This field is for your observations only.</strong> It will appear separately from the generated summary and is flagged for interpretation by the SPED teacher before IEP use.
+      </p>
+      <textarea placeholder="e.g., 'Does really well in my small reading group — stays with it, answers questions. Totally different in morning meeting, moving around, not tracking. Gets dysregulated when we transition to outside. Seems to do better when I give him a heads up.'"></textarea>
+    </div>
+
+    <div class="callout warm" style="margin-top: 16px; font-size:0.86rem;">
+      <strong>Note on teacher language:</strong> Your words don't need to be clinical. Write what you see. The SPED teacher will translate your observations into IEP-ready participation language — that's their role. Your job is to describe the pattern accurately.
+    </div>
+
+    <!-- GENERATED SUMMARY OUTPUT -->
+    <div class="summary-output" id="summary-output">
+      <h3>📋 Generated Participation Summary</h3>
+      <p style="font-size:0.78rem;color:var(--muted);margin-bottom:10px;font-style:italic;">IEP-ready language — generated from structured form data</p>
+      <div class="output-text" id="output-text"></div>
+      <div class="output-attribution" id="output-attribution"></div>
+
+      <div class="teacher-notes-block" id="teacher-notes-block" style="display:none;">
+        <div class="teacher-notes-header">
+          ⚠ Teacher Observation Notes — requires interpretation before IEP use
+        </div>
+        <div class="teacher-notes-text" id="teacher-notes-text"></div>
+        <p class="teacher-notes-caption">These are the teacher's raw observations. Language should be translated into participation framing by the SPED teacher or SLP before inclusion in any IEP document.</p>
+      </div>
+
+      <div class="output-actions">
+        <button class="btn-copy" onclick="copyOutput()">Copy to clipboard</button>
+        <button class="btn-copy" onclick="downloadOutput()">Download .txt</button>
+        <span style="font-size:0.78rem;color:var(--muted);align-self:center;font-style:italic;">Ready to paste into IEP Present Levels</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       DOCUMENTATION LANGUAGE
+  ═══════════════════════════════════════════ -->
+  <section id="language">
+    <h2>Documentation Language</h2>
+    <p class="section-intro">How you write what you've observed shapes how every future team understands this child. Participation language is more accurate — and more protective — than deficit language. Here's the shift.</p>
+
+    <div class="callout slate">
+      <strong>One sentence worth keeping in every report:</strong><br>
+      <em>"Skills are present but not consistently accessible under typical classroom demands."</em><br>
+      <span style="font-size: 0.88rem;">This tells the reader the child has capacity, the environment is part of the equation, and what specialized instruction is targeting — without pathologizing the child or inflating eligibility.</span>
+    </div>
+
+    <h3>Key Language Shifts</h3>
+    <div class="compare-grid">
+      <div class="compare-card compare-before">
+        <div class="label">❌ Deficit Language</div>
+        <p>"Student has difficulty attending during circle time and cannot follow multi-step directions."</p>
+        <p class="note">Locates the problem entirely in the child. Tells next team nothing about what works.</p>
+      </div>
+      <div class="compare-card compare-after">
+        <div class="label">✓ Participation Language</div>
+        <p>"In circle time with adult nearby and visual schedule present, student sustains attention for 8–10 minutes and follows 2-step directions. In whole-group without visual supports, attention drops to 2–3 minutes and adult prompting is needed."</p>
+        <p class="note">Documents what conditions enable access. Next team knows where to start.</p>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-before">
+        <div class="label">❌ Deficit Language</div>
+        <p>"Student does not initiate peer interaction and withdraws during free play."</p>
+        <p class="note">Describes the absence without explaining why or when.</p>
+      </div>
+      <div class="compare-card compare-after">
+        <div class="label">✓ Participation Language</div>
+        <p>"In adult-facilitated small group with familiar peers, student initiates communication and responds to peer bids. In open free play with 8+ children, student watches from the edges and communication drops to gestures. Adult mediation is the enabling condition."</p>
+        <p class="note">Describes the pattern and names what makes participation possible.</p>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-before">
+        <div class="label">❌ Deficit Language</div>
+        <p>"Student has emotional regulation difficulties and frequently becomes dysregulated."</p>
+        <p class="note">Vague, pathologizing, and useless for planning.</p>
+      </div>
+      <div class="compare-card compare-after">
+        <div class="label">✓ Participation Language</div>
+        <p>"Student self-regulates successfully in predictable routines with visual schedule and adult within reach. Dysregulation occurs during unannounced transitions and in high-sensory environments (lunch, outdoor play). Recovery time is 5–8 minutes with co-regulation support from familiar adult."</p>
+        <p class="note">Specific, plannable, and tells the next team exactly what to do.</p>
+      </div>
+    </div>
+
+    <h3>From Teacher Observation to Present Levels</h3>
+    <div class="callout blue">
+      <strong>Your observations become the IEP's present levels.</strong> When the SLP, psychologist, or special education teacher writes the present levels section, they're drawing on exactly what you've documented here. The more specific your context notes, the stronger the present levels — and the more protected the student is when the team changes.
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       AEPS-3 CROSSWALK
+  ═══════════════════════════════════════════ -->
+  <section id="crosswalk">
+    <h2>AEPS-3 Crosswalk</h2>
+    <p class="section-intro">The Assessment, Evaluation, and Programming System (AEPS-3) is an activity-based, ecologically valid assessment tool aligned with IDEA outcomes. This crosswalk maps the observation domains in this guide to specific AEPS-3 strands and goals — supporting teams working toward AEPS-3 adoption or using it alongside this framework.</p>
+
+    <div class="callout slate">
+      <strong>Why AEPS-3?</strong> Unlike standardized norm-referenced tools, AEPS-3 is designed to be administered in natural routines, across familiar partners, and over time — making it philosophically consistent with the PTKLF and this observation approach. It captures functional skills in context, not performance in a testing room.
+    </div>
+
+    <h3>ATL — Approaches to Learning</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>This Guide — Observation Area</th>
+            <th>PTKLF Foundation</th>
+            <th>AEPS-3 Strand / Goal Area</th>
+            <th>DRDP Measure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-group"><td colspan="4">Attention &amp; Engagement</td></tr>
+          <tr class="row-atl">
+            <td>Sustains attention during group instruction</td>
+            <td>ATL: Attention Maintenance</td>
+            <td>Social-Communication · Strand D: Pragmatics (following group instructions); also Fine Motor/Adaptive routines</td>
+            <td>ATL-REG 2: Attention Maintenance</td>
+          </tr>
+          <tr class="row-atl">
+            <td>Responds when called on or invited</td>
+            <td>ATL: Initiative</td>
+            <td>Social-Communication · Strand A: Social Interaction (responds to communicative bids)</td>
+            <td>ATL-REG 1: Curiosity and Initiative in Learning</td>
+          </tr>
+          <tr class="row-group"><td colspan="4">Curiosity, Persistence &amp; Problem-Solving</td></tr>
+          <tr class="row-atl">
+            <td>Sustains engagement with materials; returns after interruption</td>
+            <td>ATL: Persistence</td>
+            <td>Cognitive · Strand A: Engagement and Exploration; Strand B: Problem-Solving</td>
+            <td>ATL-REG 3: Persistence</td>
+          </tr>
+          <tr class="row-atl">
+            <td>Tries new activity or material; adjusts approach</td>
+            <td>ATL: Flexibility; Problem-Solving</td>
+            <td>Cognitive · Strand B: Problem-Solving (flexible strategies)</td>
+            <td>ATL-REG 4: Flexible Problem-Solving</td>
+          </tr>
+          <tr class="row-group"><td colspan="4">Transitions &amp; Flexibility</td></tr>
+          <tr class="row-atl">
+            <td>Responds to transition cues; moves to next activity</td>
+            <td>ATL: Flexibility</td>
+            <td>Adaptive · Strand A: Self-Care (navigating routines); Social-Emotional · Strand A: Regulation (transition management)</td>
+            <td>ATL-REG 5: Shared Use of Space and Materials</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>SED — Social-Emotional Development</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>This Guide — Observation Area</th>
+            <th>PTKLF Foundation</th>
+            <th>AEPS-3 Strand / Goal Area</th>
+            <th>DRDP Measure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-group"><td colspan="4">Adult Relationships</td></tr>
+          <tr class="row-sed">
+            <td>Seeks adults for comfort, help, sharing</td>
+            <td>SED: Relationships with Adults</td>
+            <td>Social-Communication · Strand A: Social Interaction (initiates with familiar adults)</td>
+            <td>SED 1: Interactions with Familiar Adults</td>
+          </tr>
+          <tr class="row-sed">
+            <td>Accepts redirection without escalation</td>
+            <td>SED: Self-Concept; Identity</td>
+            <td>Social-Emotional · Strand A: Regulation (responds to adult guidance)</td>
+            <td>SED 3: Relationships with Adults</td>
+          </tr>
+          <tr class="row-group"><td colspan="4">Peer Interaction &amp; Play</td></tr>
+          <tr class="row-sed">
+            <td>Parallel play; joins shared play</td>
+            <td>SED: Peer Relationships; Social Participation</td>
+            <td>Social-Communication · Strand A: Social Interaction (plays near/with peers); Cognitive · Strand C: Play (associative and cooperative play)</td>
+            <td>SED 4: Peer Interactions; SED 5: Group Participation</td>
+          </tr>
+          <tr class="row-sed">
+            <td>Initiates with peers; responds to peer bids</td>
+            <td>SED: Peer Relationships</td>
+            <td>Social-Communication · Strand A: Social Interaction (initiates/responds to peer bids)</td>
+            <td>SED 4: Peer Interactions</td>
+          </tr>
+          <tr class="row-sed">
+            <td>Maintains back-and-forth play; navigates conflict</td>
+            <td>SED: Social Participation; Empathy</td>
+            <td>Social-Communication · Strand D: Pragmatics (maintains exchanges); Social-Emotional · Strand B: Conflict Resolution</td>
+            <td>SED 6: Social and Emotional Understanding</td>
+          </tr>
+          <tr class="row-group"><td colspan="4">Classroom Community</td></tr>
+          <tr class="row-sed">
+            <td>Participates in shared routines; responds to group norms</td>
+            <td>SED: Identity and Belonging</td>
+            <td>Adaptive · Strand A: participation in group routines; Social-Emotional · Strand A</td>
+            <td>SED 2: Interactions with Unfamiliar Adults; SED 5: Group Participation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>REG — Self-Regulation</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>This Guide — Observation Area</th>
+            <th>PTKLF Foundation</th>
+            <th>AEPS-3 Strand / Goal Area</th>
+            <th>DRDP Measure</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-group"><td colspan="4">Emotional Regulation</td></tr>
+          <tr class="row-reg">
+            <td>Returns to calm after frustration with adult support</td>
+            <td>REG: Co-regulation with Adults</td>
+            <td>Social-Emotional · Strand A: Regulation (uses co-regulation strategies)</td>
+            <td>ATL-REG 6: Self-Comforting; SED 7: Emotional Regulation</td>
+          </tr>
+          <tr class="row-reg">
+            <td>Uses calming strategies or supports</td>
+            <td>REG: Emotional Regulation</td>
+            <td>Social-Emotional · Strand A: Regulation (uses self-regulation strategies)</td>
+            <td>ATL-REG 6: Self-Comforting</td>
+          </tr>
+          <tr class="row-reg">
+            <td>Tolerates change to preferred routine</td>
+            <td>REG: Emotional Regulation; Flexibility</td>
+            <td>Social-Emotional · Strand A: Regulation; Adaptive routines</td>
+            <td>ATL-REG 4: Flexible Problem-Solving; SED 7: Emotional Regulation</td>
+          </tr>
+          <tr class="row-group"><td colspan="4">Impulse Control &amp; Attention</td></tr>
+          <tr class="row-reg">
+            <td>Waits for turn; stops behavior when asked</td>
+            <td>REG: Impulse Control</td>
+            <td>Social-Emotional · Strand A: Regulation (inhibitory control); Social-Communication Strand D: Pragmatics (turn-taking)</td>
+            <td>ATL-REG 7: Inhibitory Control</td>
+          </tr>
+          <tr class="row-reg">
+            <td>Sustains attention; refocuses after distraction</td>
+            <td>REG: Attention Regulation</td>
+            <td>Cognitive · Strand A: Engagement (sustains attention); Social-Emotional Strand A</td>
+            <td>ATL-REG 2: Attention Maintenance</td>
+          </tr>
+          <tr class="row-group"><td colspan="4">Sensory &amp; Physical Regulation</td></tr>
+          <tr class="row-reg">
+            <td>Manages sensory environment; participates in motor activities</td>
+            <td>REG: (sensory-physical)</td>
+            <td>Gross Motor · Strand A–B: locomotion, play; Fine Motor · Strand A–B: manipulation; Adaptive · self-care routines</td>
+            <td>Gross Motor (GM) measures; Fine Motor (FM) measures</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout green" style="margin-top: 24px;">
+      <strong>Note on AEPS-3 administration:</strong> AEPS-3 is designed to be completed through observation in natural routines over time — not administered as a test in a single sitting. Teachers who are observing participation patterns for this guide are already gathering AEPS-3-eligible data. The tool is most powerful when observation is ongoing and embedded in daily routines, exactly as this guide encourages.
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       ALIGNMENT
+  ═══════════════════════════════════════════ -->
+  <section id="alignment">
+    <h2>Framework Alignment</h2>
+    <p class="section-intro">This guide is grounded in California's early childhood frameworks and federal technical assistance guidance. It doesn't create new requirements — it provides a bridge between what California already defines as high-quality early learning and what IDEA requires for participation-focused documentation.</p>
+
+    <div class="align-card">
+      <h4>California Preschool/Transitional Kindergarten Learning Foundations (PTKLF, 2024)</h4>
+      <div class="source">California Department of Education & WestEd (2024)</div>
+      <p>The PTKLF define learning as participation across natural contexts, explicitly emphasizing child-led exploration, cultural responsiveness, and inclusion. They frame development as integrated across domains and shaped by environment and relationships — the same logic that grounds this observation tool.</p>
+      <div class="badge-row">
+        <span class="badge badge-atl">ATL Foundations</span>
+        <span class="badge badge-sed">SED Foundations</span>
+        <span class="badge badge-reg">Self-Regulation Foundations</span>
+      </div>
+    </div>
+
+    <div class="align-card">
+      <h4>Desired Results Developmental Profile (DRDP)</h4>
+      <div class="source">California Department of Education — statewide observational assessment</div>
+      <p>The DRDP is California's observational assessment tool for early childhood, organized around the same developmental domains addressed here. Because it is administered through observation in natural contexts over time, DRDP data directly supports and complements observations from this guide. Teachers already using the DRDP are already gathering ecologically valid data.</p>
+      <div class="badge-row">
+        <span class="badge badge-atl">ATL-REG Strand</span>
+        <span class="badge badge-sed">SED Strand</span>
+        <span class="badge badge-sage">Language &amp; Literacy</span>
+        <span class="badge badge-sage">Cognition Strand</span>
+      </div>
+    </div>
+
+    <div class="align-card">
+      <h4>Assessment, Evaluation, and Programming System (AEPS-3)</h4>
+      <div class="source">Bricker et al. — activity-based, ecologically valid assessment aligned with IDEA</div>
+      <p>AEPS-3 captures functional skills in natural routines across familiar partners — making it the most ecologically valid standardized assessment option for this population. The full crosswalk in this guide maps observation domains to specific AEPS-3 strands, supporting teams pursuing AEPS-3 adoption or using it in tandem with other tools.</p>
+      <div class="badge-row">
+        <span class="badge badge-sage">Social-Emotional Strand</span>
+        <span class="badge badge-sage">Social-Communication Strand</span>
+        <span class="badge badge-sage">Cognitive Strand</span>
+        <span class="badge badge-sage">Adaptive Strand</span>
+      </div>
+    </div>
+
+    <div class="align-card">
+      <h4>CDE Inclusive Early Education & Rightful Presence</h4>
+      <div class="source">California Department of Education (2024)</div>
+      <p>CDE guidance defines inclusion as belonging and access within community settings — treating the environment as the primary locus of change, not the child. This guide's documentation approach is directly aligned with Rightful Presence principles: the question is always "does this environment provide access?" before asking "what does this child need to fix?"</p>
+      <div class="badge-row">
+        <span class="badge badge-sage">LRE Decision-Making</span>
+        <span class="badge badge-sage">Rightful Presence</span>
+      </div>
+    </div>
+
+    <div class="align-card">
+      <h4>ECTA Center — Preschool LRE Decision-Making</h4>
+      <div class="source">Early Childhood Technical Assistance Center (ECTA) — federally funded IDEA technical assistance</div>
+      <p>ECTA guidance emphasizes environmental analysis over categorical severity in preschool placement and service decisions. Rather than asking how impaired a child is, ECTA-aligned practice asks whether the environment provides access — and what supports enable meaningful participation alongside peers. ECTA's <em>Guiding Questions for Discussing Services in the LRE</em> and <em>Preschool LRE Reference Points and Discussion Prompts</em> are the closest federal TA analog to this observation framework — team discussion tools built around the same environmental access logic.</p>
+      <div class="badge-row">
+        <span class="badge badge-sage">Preschool LRE</span>
+        <span class="badge badge-sage">Environmental Analysis</span>
+        <span class="badge badge-sage">Inclusive Practices</span>
+        <span class="badge badge-sage">IDEA Part B / Part C</span>
+      </div>
+    </div>
+
+    <div class="align-card">
+      <h4>Ecological Congruence Assessment (ECA) for Classroom Activities and Routines</h4>
+      <div class="source">Wolery, M., Brashers, M.S., & Neitzel, J.C. (2002). Topics in Early Childhood Special Education, 22(3)</div>
+      <p>The ECA is the direct research predecessor of this guide's observation approach. Developed to address two persistent problems in inclusive early childhood settings — nonfunctional IEP goals and contextually irrelevant specialist recommendations — the ECA process asks teachers to document child functioning across usual classroom activities, routines, and transitions, then share that information with the team. The result: goals and recommendations grounded in real classroom ecology rather than contrived assessment contexts. This guide operationalizes that same three-phase logic (observe → summarize → share) for P/TK–K teams using PTKLF foundations as the organizing structure.</p>
+      <div class="badge-row">
+        <span class="badge badge-sage">Ecological Assessment</span>
+        <span class="badge badge-sage">Routines-Based</span>
+        <span class="badge badge-sage">Functional Goals</span>
+        <span class="badge badge-sage">Inclusive ECE</span>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /content -->
+
+<div class="page-footer">
+  <div class="footer-district">Folsom Cordova Unified School District · Special Education · Early Childhood Assessment Team (ECAT)</div>
+  PRISM — Participation Routines &amp; Inclusive Supports Map · v1.0 · February 2026 · Aligned with California PTKLF (2024) · DRDP · AEPS-3 · ECTA Preschool LRE Guidance
+</div>
+
+</div><!-- /.content -->
+
+
+<script>
+  // ── NAVIGATION ──
+  function show(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── DIVERGENCE GATE (v1.1) ──
+  // gateState: { atl: 'yes'|'no'|null, sed: ..., reg: ... }
+  const gateState = { atl: null, sed: null, reg: null };
+
+  function setGate(domain, value) {
+    gateState[domain] = value;
+    const yesBtn = document.getElementById(`${domain}-gate-yes`);
+    const noBtn  = document.getElementById(`${domain}-gate-no`);
+    const mini   = document.getElementById(`${domain}-mini`);
+    const note   = document.getElementById(`${domain}-gate-note`);
+
+    yesBtn.classList.remove('active-yes','active-no');
+    noBtn.classList.remove('active-yes','active-no');
+
+    if (value === 'yes') {
+      yesBtn.classList.add('active-yes');
+      mini.style.display  = 'none';
+      note.style.display  = 'none';
+    } else {
+      noBtn.classList.add('active-no');
+      mini.style.display  = 'block';
+      note.style.display  = 'block';
+    }
+    scheduleSave();
+  }
+
+  // ── CONTRAST SELECTOR VALIDATION ──
+  function checkContrast(domain) {
+    const id = domain === 'shared' ? 'shared' : domain;
+    const best = document.getElementById(`${id}-best`).value;
+    const constrained = document.getElementById(`${id}-constrained`).value;
+    const warn = document.getElementById(`${id}-contrast-warn`);
+    warn.classList.toggle('visible', !!(best && constrained && best === constrained));
+    scheduleSave();
+  }
+
+  // ── DRIVER RANKING VALIDATION ──
+  function checkDrivers() {
+    const primary = document.getElementById('driver-primary').value;
+    const secondary = document.getElementById('driver-secondary').value;
+    const warn = document.getElementById('driver-warn');
+    if (secondary && primary && secondary === primary) {
+      warn.classList.add('visible');
+      document.getElementById('driver-secondary').value = '';
+    } else {
+      warn.classList.remove('visible');
+    }
+    scheduleSave();
+  }
+
+  // ── SUPPORT CAP ENFORCEMENT ──
+  function enforceSuportCaps() {
+    const udlBoxes = document.querySelectorAll('.udl-cb');
+    const udlChecked = [...udlBoxes].filter(cb => cb.checked);
+    const udlWarn = document.getElementById('udl-warn');
+    if (udlChecked.length >= 3) {
+      udlBoxes.forEach(cb => { if (!cb.checked) cb.disabled = true; });
+      udlWarn.classList.add('visible');
+    } else {
+      udlBoxes.forEach(cb => cb.disabled = false);
+      udlWarn.classList.remove('visible');
+    }
+    const indBoxes = document.querySelectorAll('.ind-cb');
+    const indChecked = [...indBoxes].filter(cb => cb.checked);
+    const indWarn = document.getElementById('ind-warn');
+    if (indChecked.length >= 2) {
+      indBoxes.forEach(cb => { if (!cb.checked) cb.disabled = true; });
+      indWarn.classList.add('visible');
+    } else {
+      indBoxes.forEach(cb => cb.disabled = false);
+      indWarn.classList.remove('visible');
+    }
+    const specifier = document.getElementById('ind-specifier');
+    specifier.style.display = indChecked.length > 0 ? 'block' : 'none';
+    scheduleSave();
+  }
+
+  // ── AUTOSAVE ──
+  const SAVE_KEY = 'prism_v11';
+  let saveTimer = null;
+
+  function collectFormData() {
+    const data = { student: '', checkboxes: {}, textareas: {}, selects: {}, radios: {}, gates: {} };
+    data.student = document.getElementById('student-name').value;
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      if (cb.id) data.checkboxes[cb.id] = cb.checked;
+    });
+    document.querySelectorAll('textarea').forEach(ta => {
+      if (ta.id) data.textareas[ta.id] = ta.value;
+    });
+    document.querySelectorAll('select').forEach(sel => {
+      if (sel.id) data.selects[sel.id] = sel.value;
+    });
+    const indType = document.querySelector('input[name="ind-type"]:checked');
+    if (indType) data.radios['ind-type'] = indType.value;
+    data.gates = { ...gateState };
+    // Save pattern radios
+    ['atl','sed','reg'].forEach(d => {
+      const r = document.querySelector(`input[name="${d}-pattern"]:checked`);
+      if (r) data.radios[`${d}-pattern`] = r.id;
+    });
+    return data;
+  }
+
+  function restoreFormData(data) {
+    if (!data) return;
+    if (data.student) document.getElementById('student-name').value = data.student;
+    if (data.checkboxes) Object.entries(data.checkboxes).forEach(([id, val]) => {
+      const el = document.getElementById(id); if (el) el.checked = val;
+    });
+    if (data.textareas) Object.entries(data.textareas).forEach(([id, val]) => {
+      const el = document.getElementById(id); if (el) el.value = val;
+    });
+    if (data.selects) Object.entries(data.selects).forEach(([id, val]) => {
+      const el = document.getElementById(id); if (el) el.value = val;
+    });
+    if (data.radios) {
+      if (data.radios['ind-type']) {
+        const el = document.querySelector(`input[name="ind-type"][value="${data.radios['ind-type']}"]`);
+        if (el) el.checked = true;
+      }
+      ['atl','sed','reg'].forEach(d => {
+        if (data.radios[`${d}-pattern`]) {
+          const el = document.getElementById(data.radios[`${d}-pattern`]);
+          if (el) el.checked = true;
+        }
+      });
+    }
+    if (data.gates) {
+      ['atl','sed','reg'].forEach(d => {
+        if (data.gates[d]) setGate(d, data.gates[d]);
+      });
+    }
+    ['shared','atl','sed','reg'].forEach(d => {
+      const el = document.getElementById(`${d}-best`);
+      if (el) checkContrast(d);
+    });
+    checkDrivers();
+    enforceSuportCaps();
+  }
+
+  function saveNow() {
+    const data = collectFormData();
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+    const status = document.getElementById('save-status');
+    status.textContent = 'Saved ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    status.classList.add('saved');
+    setTimeout(() => status.classList.remove('saved'), 3000);
+  }
+
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveNow, 1200);
+    const status = document.getElementById('save-status');
+    status.textContent = 'Unsaved changes…';
+    status.classList.remove('saved');
+  }
+
+  // ── VOCABULARY MAPS ──
+  const CTX_LABEL = {
+    whole_group:       'whole group',
+    small_group:       'small group',
+    free_play_centers: 'free play and centers',
+    transitions:       'transitions'
+  };
+  const CTX_QUALIFIER = {
+    whole_group:       'during teacher-led instruction',
+    small_group:       'in a small-group setting',
+    free_play_centers: 'in less structured, peer-dense play',
+    transitions:       'during routine changes'
+  };
+  const DRIVER_PHRASE = {
+    group_size_peer_density:     'group size and peer density increase',
+    sensory_load:                'sensory load increases (noise, movement, proximity)',
+    language_task_complexity:    'language or task complexity increases',
+    transition_unpredictability: 'transition predictability decreases',
+    reduced_adult_structure:     'adult structure decreases'
+  };
+  const DRIVER_CONTEXT = {
+    group_size_peer_density:     'peer-dense',
+    sensory_load:                'high sensory load',
+    language_task_complexity:    'language-heavy',
+    transition_unpredictability: 'unpredictable',
+    reduced_adult_structure:     'less structured'
+  };
+  const SCOPE_PHRASE = {
+    partial_day:       'partial-day observation',
+    specific_routines: 'observation of specific routines',
+    report_based:      'report-based information (no direct observation)',
+    other_setting:     'information from another setting (home or daycare)'
+  };
+  const IND_TYPE_PHRASE = {
+    adult_proximity:         'adult proximity beyond what is typically available',
+    individual_plan:         'an individually designed support plan',
+    specialized_instruction: 'specialized instruction',
+    assistive_communication: 'an individualized communication system'
+  };
+  const IND_TEXT = {
+    atl: [
+      'sustains attention to adult-led activities',
+      'initiates and sustains engagement in chosen activities',
+      'returns to tasks after interruption',
+      'transitions between activities without escalation',
+      'demonstrates flexible problem-solving when challenged'
+    ],
+    sed: [
+      'engages with familiar adults',
+      'initiates or responds to peer interaction',
+      'maintains reciprocal interaction beyond a single exchange',
+      'participates in shared classroom routines',
+      'navigates minor peer conflict with or without adult support'
+    ],
+    reg: [
+      'returns to calm with available co-regulation supports',
+      'tolerates predictable transitions',
+      'sustains attention without frequent redirection',
+      'manages the sensory demands of typical classroom environments',
+      'follows safety and group expectations'
+    ]
+  };
+  const DOMAIN_FULL = {
+    atl: 'Approaches to Learning',
+    sed: 'Social-Emotional Development',
+    reg: 'Self-Regulation'
+  };
+
+  // ── VALIDATION ──
+  const TIER1_FIELDS = [
+    { id: 'shared-best',       label: 'Best access context (Observation)' },
+    { id: 'shared-constrained',label: 'Most constrained context (Observation)' },
+    { id: 'driver-primary',    label: 'Primary environmental driver' }
+  ];
+
+  function validateTier1() {
+    const missing = TIER1_FIELDS.filter(f => {
+      const el = document.getElementById(f.id);
+      return !el || !el.value;
+    });
+    // Also check that all three gates have been answered
+    ['atl','sed','reg'].forEach(d => {
+      if (!gateState[d]) missing.push({ id: `${d}-gate-yes`, label: `${d.toUpperCase()} divergence gate` });
+    });
+    return missing;
+  }
+
+  function highlightMissing(missing) {
+    TIER1_FIELDS.forEach(f => {
+      const el = document.getElementById(f.id);
+      if (el) el.style.borderColor = '';
+    });
+    if (!missing.length) return;
+    missing.forEach(f => {
+      const el = document.getElementById(f.id);
+      if (el) el.style.borderColor = '#c0392b';
+    });
+    const first = document.getElementById(missing[0].id);
+    if (first) {
+      const section = first.closest('section');
+      if (section && !section.classList.contains('active')) {
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        section.classList.add('active');
+        const navBtn = document.querySelector(`nav button[onclick="show('${section.id}')"]`);
+        if (navBtn) navBtn.classList.add('active');
+      }
+      setTimeout(() => { first.scrollIntoView({ behavior: 'smooth', block: 'center' }); first.focus(); }, 100);
+    }
+    const status = document.getElementById('save-status');
+    status.textContent = `Complete required fields: ${missing.map(f => f.label).join(', ')}`;
+    status.style.color = '#c0392b';
+    setTimeout(() => { status.style.color = ''; status.textContent = 'Not yet saved'; }, 5000);
+  }
+
+  // ── RENDERER ──
+  function getFormState() {
+    const sel = s => { const el = document.getElementById(s); return el ? el.value : ''; };
+    const cb  = s => { const el = document.getElementById(s); return el ? el.checked : false; };
+    const ta  = s => { const el = document.getElementById(s); return el ? el.value.trim() : ''; };
+    const radio = n => { const el = document.querySelector(`input[name="${n}"]:checked`); return el ? el.value : ''; };
+
+    // Per-domain best/constrained: use mini-matrix if gate=no, else inherit shared
+    function domainCtx(d, side) {
+      if (gateState[d] === 'no') return sel(`${d}-${side}`);
+      return sel(`shared-${side}`);
+    }
+
+    return {
+      shared_best:        sel('shared-best'),
+      shared_constrained: sel('shared-constrained'),
+      atl_best:        domainCtx('atl','best'),
+      atl_constrained: domainCtx('atl','constrained'),
+      sed_best:        domainCtx('sed','best'),
+      sed_constrained: domainCtx('sed','constrained'),
+      reg_best:        domainCtx('reg','best'),
+      reg_constrained: domainCtx('reg','constrained'),
+      atl_diverges:    gateState.atl === 'no',
+      sed_diverges:    gateState.sed === 'no',
+      reg_diverges:    gateState.reg === 'no',
+      driver_primary:   sel('driver-primary'),
+      driver_secondary: sel('driver-secondary'),
+      atl_pattern: (()=>{ const r=document.querySelector('input[name="atl-pattern"]:checked'); return r ? (r.id==='atl-p1'?'broad':r.id==='atl-p2'?'context_dependent':'high_support') : ''; })(),
+      sed_pattern: (()=>{ const r=document.querySelector('input[name="sed-pattern"]:checked'); return r ? (r.id==='sed-p1'?'broad':r.id==='sed-p2'?'context_dependent':'high_support') : ''; })(),
+      reg_pattern: (()=>{ const r=document.querySelector('input[name="reg-pattern"]:checked'); return r ? (r.id==='reg-p1'?'broad':r.id==='reg-p2'?'context_dependent':'high_support') : ''; })(),
+      atl_indicators: [1,2,3,4,5].filter(i => cb(`atl-i${i}`)).map(i => IND_TEXT.atl[i-1]),
+      sed_indicators: [1,2,3,4,5].filter(i => cb(`sed-i${i}`)).map(i => IND_TEXT.sed[i-1]),
+      reg_indicators: [1,2,3,4,5].filter(i => cb(`reg-i${i}`)).map(i => IND_TEXT.reg[i-1]),
+      udl_supports: [1,2,3,4,5,6,7,8].filter(i => cb(`udl${i}`)).map(i =>
+        ['visual schedule','first/then board','predictable routines','clear expectations',
+         'access to a calming area','peer modeling','reduced sensory clutter','small-group structures'][i-1]),
+      ind_supports: [1,2,3,4].filter(i => cb(`ind${i}`)).length > 0,
+      ind_type: radio('ind-type'),
+      obs_scope: sel('obs-scope'),
+      synthesis: ta('synthesis-narrative'),
+      student: document.getElementById('student-name')?.value.trim() || ''
+    };
+  }
+
+  function renderPatternOpener(pattern, domains) {
+    const nameList = domains.map(d => DOMAIN_FULL[d]);
+    const nameStr = nameList.length === 1
+      ? nameList[0]
+      : nameList.length === 2
+        ? `${nameList[0]} and ${nameList[1]}`
+        : `${nameList[0]}, ${nameList[1]}, and ${nameList[2]}`;
+
+    if (pattern === 'broad') {
+      return `Across observed classroom routines, ${nameStr} ${domains.length > 1 ? 'are' : 'is'} generally accessible within the supports present in the classroom.`;
+    }
+    if (pattern === 'context_dependent') {
+      return `${nameStr} ${domains.length > 1 ? 'are' : 'is'} context-dependent, with participation shifting predictably based on environmental conditions.`;
+    }
+    if (pattern === 'high_support') {
+      return `${nameStr} ${domains.length > 1 ? 'are' : 'is'} variable across contexts and most accessible when individualized supports are in place.`;
+    }
+    return `${nameStr} participation varies across classroom contexts.`;
+  }
+
+  function renderContrastFrame(bestCtx, constCtx, indicators, udlSupports, indSupports, indType, primaryDriver) {
+    const bestLabel  = CTX_LABEL[bestCtx]    || bestCtx;
+    const constLabel = CTX_LABEL[constCtx]   || constCtx;
+    const constQual  = CTX_QUALIFIER[constCtx] || '';
+    const topInds    = indicators.length <= 2 ? indicators : indicators.slice(0,2);
+    const indList    = topInds.length ? `the student ${topInds.join(' and ')}` : 'participation is most accessible';
+    const udlNote    = udlSupports.length ? ` with ${udlSupports.slice(0,2).join(' and ')} in place` : '';
+    const bestSentence = `In ${bestLabel}${udlNote}, ${indList}.`;
+    const driverPhrase = DRIVER_PHRASE[primaryDriver] || 'environmental demands increase';
+    const indSupportNote = (indSupports && indType) ? ` Access may require ${IND_TYPE_PHRASE[indType] || 'individualized support'}.` : '';
+    const constrainedSentence = `In ${constLabel} ${constQual}, participation becomes more variable as ${driverPhrase}.${indSupportNote}`;
+    return `${bestSentence} ${constrainedSentence}`;
+  }
+
+  function renderDriverClause(primaryDriver, secondaryDriver) {
+    const primary = DRIVER_PHRASE[primaryDriver];
+    if (!primary) return '';
+    const driverCtx = DRIVER_CONTEXT[primaryDriver] || '';
+    let clause = `Participation is most variable in ${driverCtx} conditions — specifically as ${primary}.`;
+    if (secondaryDriver && secondaryDriver !== primaryDriver) {
+      clause += ` This pattern is compounded as ${DRIVER_PHRASE[secondaryDriver]}.`;
+    }
+    return clause;
+  }
+
+  function renderSupportClause(udlSupports, indSupports, indType) {
+    if (!udlSupports.length && !indSupports) return '';
+    const parts = [];
+    if (udlSupports.length) parts.push(`${udlSupports.join(', ')} ${udlSupports.length > 1 ? 'are' : 'is'} among the universal classroom supports that enable access`);
+    if (indSupports && indType) parts.push(`access is most supported when ${IND_TYPE_PHRASE[indType] || 'individualized support'} is available`);
+    return parts.length ? `${parts.join('; ')}.` : '';
+  }
+
+  function renderScopeClause(scope) {
+    const phrase = SCOPE_PHRASE[scope];
+    if (!phrase) return '';
+    return `These findings reflect ${phrase} and may vary across settings and routines not observed.`;
+  }
+
+  // ── CONSOLIDATED RENDERER (v1.1) ──
+  // Groups domains by shared best+constrained+pattern, renders one paragraph per group
+  function renderLocal(state) {
+    const domains = ['atl','sed','reg'];
+
+    // Build group key for each domain
+    function groupKey(d) {
+      return `${state[`${d}_best`]}|${state[`${d}_constrained`]}|${state[`${d}_pattern`]}`;
+    }
+
+    // Group domains
+    const groups = [];
+    const seen = {};
+    domains.forEach(d => {
+      const key = groupKey(d);
+      if (seen[key] !== undefined) {
+        groups[seen[key]].domains.push(d);
+      } else {
+        seen[key] = groups.length;
+        groups.push({ key, domains: [d], best: state[`${d}_best`], constrained: state[`${d}_constrained`], pattern: state[`${d}_pattern`] });
+      }
+    });
+
+    const paragraphs = [];
+    const driverRendered  = { done: false };
+    const supportRendered = { done: false };
+
+    groups.forEach(group => {
+      const allIndicators = group.domains.flatMap(d => state[`${d}_indicators`]);
+      const opener   = renderPatternOpener(group.pattern, group.domains);
+      const contrast = renderContrastFrame(group.best, group.constrained, allIndicators, state.udl_supports, state.ind_supports, state.ind_type, state.driver_primary);
+
+      // Driver and support clause only once (on first group)
+      let driver  = '';
+      let support = '';
+      if (!driverRendered.done) {
+        driver = renderDriverClause(state.driver_primary, state.driver_secondary);
+        driverRendered.done = true;
+      }
+      if (!supportRendered.done) {
+        support = renderSupportClause(state.udl_supports, state.ind_supports, state.ind_type);
+        supportRendered.done = true;
+      }
+
+      paragraphs.push([opener, contrast, driver, support].filter(Boolean).join(' '));
+    });
+
+    const scope   = renderScopeClause(state.obs_scope);
+    const closing = 'Skills are present but not consistently accessible under all classroom demands.';
+    const header  = state.student ? `Student: ${state.student}\n` : '';
+    const body    = [...paragraphs, scope, closing].filter(Boolean).join('\n\n');
+    const ts      = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const attribution = `Teacher-reported observational summary. Context-referenced participation data. PRISM v1.1 · Generated ${ts}`;
+    return { text: header + body, attribution };
+  }
+
+  // ── GENERATE ──
+  function generateSummary() {
+    const missing = validateTier1();
+    if (missing.length) { highlightMissing(missing); return; }
+
+    const state      = getFormState();
+    const outputBox  = document.getElementById('summary-output');
+    const outputText = document.getElementById('output-text');
+
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('synthesis').classList.add('active');
+    const synthBtn = document.querySelector("nav button[onclick=\"show('synthesis')\"]");
+    if (synthBtn) synthBtn.classList.add('active');
+
+    const { text, attribution } = renderLocal(state);
+    outputText.textContent = text;
+    document.getElementById('output-attribution').textContent = attribution;
+
+    const notesBlock = document.getElementById('teacher-notes-block');
+    const notesText  = document.getElementById('teacher-notes-text');
+    if (state.synthesis) {
+      notesText.textContent = state.synthesis;
+      notesBlock.style.display = 'block';
+    } else {
+      notesBlock.style.display = 'none';
+    }
+
+    outputBox.classList.add('visible');
+    outputBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── COPY / DOWNLOAD ──
+  function getFullOutput() {
+    const text        = document.getElementById('output-text').textContent;
+    const attribution = document.getElementById('output-attribution').textContent;
+    const notes       = document.getElementById('teacher-notes-text').textContent;
+    let full = text;
+    if (attribution) full += `\n\n${attribution}`;
+    if (notes) full += `\n\n---\nTEACHER OBSERVATION NOTES — requires interpretation before IEP use\n${notes}\n---`;
+    return full;
+  }
+
+  function copyOutput() {
+    const content = getFullOutput();
+    const ta = document.createElement('textarea');
+    ta.value = content;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); } catch(e) { navigator.clipboard.writeText(content).catch(()=>{}); }
+    document.body.removeChild(ta);
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => btn.textContent = 'Copy to clipboard', 2000);
+  }
+
+  function downloadOutput() {
+    const content  = getFullOutput();
+    const student  = document.getElementById('student-name').value.trim();
+    const safeName = student ? student.replace(/[^a-zA-Z0-9_\-\.]/g, '_') : 'PRISM_summary';
+    const filename = `${safeName}_PRISM_v1.1.txt`;
+    const blob     = new Blob([content], { type: 'text/plain' });
+    const url      = URL.createObjectURL(blob);
+    const a        = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ── CLEAR ──
+  function showClearModal()  { document.getElementById('clear-modal').classList.add('visible'); }
+  function hideClearModal()  { document.getElementById('clear-modal').classList.remove('visible'); }
+  function confirmClear() {
+    localStorage.removeItem(SAVE_KEY);
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = false; cb.disabled = false; });
+    document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+    document.querySelectorAll('textarea').forEach(ta => ta.value = '');
+    document.querySelectorAll('select').forEach(sel => sel.value = '');
+    document.getElementById('student-name').value = '';
+    document.getElementById('summary-output').classList.remove('visible');
+    document.getElementById('output-text').textContent = '';
+    document.getElementById('output-attribution').textContent = '';
+    document.getElementById('teacher-notes-text').textContent = '';
+    document.getElementById('teacher-notes-block').style.display = 'none';
+    const spec = document.getElementById('ind-specifier');
+    if (spec) spec.style.display = 'none';
+    // Reset gates
+    ['atl','sed','reg'].forEach(d => {
+      gateState[d] = null;
+      ['yes','no'].forEach(v => document.getElementById(`${d}-gate-${v}`)?.classList.remove('active-yes','active-no'));
+      const mini = document.getElementById(`${d}-mini`); if (mini) mini.style.display = 'none';
+      const note = document.getElementById(`${d}-gate-note`); if (note) note.style.display = 'none';
+    });
+    document.querySelectorAll('.contrast-warning, .support-warn, #driver-warn').forEach(w => w.classList.remove('visible'));
+    const status = document.getElementById('save-status');
+    status.textContent = 'Assessment cleared';
+    status.classList.remove('saved');
+    hideClearModal();
+    setTimeout(() => { status.textContent = 'Not yet saved'; }, 2500);
+  }
+
+  // ── INIT ──
+  document.addEventListener('DOMContentLoaded', () => {
+    // Assign IDs to shared matrix radios
+    const ctxKeys = ['whole-group', 'small-group', 'free-play', 'transitions'];
+    const obsSection = document.getElementById('observation');
+    if (obsSection) {
+      const rows = obsSection.querySelectorAll('.matrix-table tbody tr');
+      rows.forEach((row, ci) => {
+        const groups = row.querySelectorAll('.check-group');
+        if (groups[0]) groups[0].querySelectorAll('input').forEach((r, li) => {
+          r.id = `shared-${ctxKeys[ci]}-level-${li}`; r.name = `shared-${ctxKeys[ci]}-level`;
+        });
+        if (groups[1]) groups[1].querySelectorAll('input').forEach((r, ai) => {
+          r.id = `shared-${ctxKeys[ci]}-access-${ai}`; r.name = `shared-${ctxKeys[ci]}-access`;
+        });
+        if (groups[2]) groups[2].querySelectorAll('input').forEach((r, pi) => {
+          r.id = `shared-${ctxKeys[ci]}-peer-${pi}`; r.name = `shared-${ctxKeys[ci]}-peer`;
+        });
+      });
+    }
+
+    // Assign IDs to pattern classification radios
+    const patternRows = document.querySelectorAll('#synthesis .pattern-card .domain-row');
+    if (patternRows[0]) patternRows[0].querySelectorAll('input').forEach((r, i) => { r.id = `atl-p${i+1}`; r.name = 'atl-pattern'; });
+    if (patternRows[1]) patternRows[1].querySelectorAll('input').forEach((r, i) => { r.id = `sed-p${i+1}`; r.name = 'sed-pattern'; });
+    if (patternRows[2]) patternRows[2].querySelectorAll('input').forEach((r, i) => { r.id = `reg-p${i+1}`; r.name = 'reg-pattern'; });
+
+    // Assign ID to synthesis textarea
+    const synthTA = document.querySelector('.synthesis-box textarea');
+    if (synthTA) synthTA.id = 'synthesis-narrative';
+
+    // Restore saved data
+    const saved = localStorage.getItem(SAVE_KEY);
+    if (saved) {
+      try {
+        restoreFormData(JSON.parse(saved));
+        document.getElementById('save-status').textContent = 'Restored from last session';
+      } catch(e) {}
+    }
+
+    // Wire autosave
+    document.querySelectorAll('input[type="checkbox"], input[type="radio"], textarea, #student-name').forEach(el => {
+      el.addEventListener('change', scheduleSave);
+      if (el.tagName === 'TEXTAREA' || el.type === 'text') el.addEventListener('input', scheduleSave);
+    });
+    document.querySelectorAll('select').forEach(sel => sel.addEventListener('change', scheduleSave));
+    document.querySelectorAll('.udl-cb, .ind-cb').forEach(cb => cb.addEventListener('change', enforceSuportCaps));
+
+    // Clear highlights on change
+    ['shared-best','shared-constrained','driver-primary'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', () => { el.style.borderColor = ''; });
+    });
+  });
+</script>
+</body>
+</html>
