@@ -40,8 +40,8 @@
 
     body {
       font-family: 'Source Sans 3', sans-serif;
-      background: ar(--cream);
-      color: ar(--ink);
+      background: var(--cream);
+      color: var(--ink);
       line-height: 1.65;
     }
 
@@ -381,13 +381,13 @@
 </div>
 
 <nav>
-  <button onclick="show('start')" class="active">Start Here</button>
-  <button onclick="show('observation')">Observation</button>
-  <button onclick="show('domains')">Domains</button>
-  <button onclick="show('synthesis')">Synthesis</button>
-  <button onclick="show('language')">Documentation</button>
-  <button onclick="show('crosswalk')">Framework Crosswalk</button>
-  <button onclick="show('alignment')">Policy &amp; Practice Alignment</button>
+  <button onclick="show('start')" data-section="start" class="active">Start Here</button>
+  <button onclick="show('observation')" data-section="observation">Observation</button>
+  <button onclick="show('domains')" data-section="domains">Domains</button>
+  <button onclick="show('synthesis')" data-section="synthesis">Synthesis</button>
+  <button onclick="show('language')" data-section="language">Documentation</button>
+  <button onclick="show('crosswalk')" data-section="crosswalk">Framework Crosswalk</button>
+  <button onclick="show('alignment')" data-section="alignment">Policy &amp; Practice Alignment</button>
 </nav>
 
 <div class="action-bar">
@@ -436,9 +436,9 @@
       <strong>Same child. Same week. Same classroom.</strong> She was engaged in small group with the visual schedule. She withdrew in loud free play without adult support. The variability isn't noise — it's data. Document what changed between those two moments.
     </div>
     <h3>How to Use This Instrument</h3>
-    <div class="info-box"><p><strong>Observation tab:</strong> Complete the shared Context Participation Matrix, forced contrast selectors, and driver ranking once — these apply across all three domains.</p></div>
-    <div class="info-box"><p><strong>Domains tab:</strong> Two indicator clusters — Approaches to Learning (including Self-Regulation) and Social-Emotional Development. Check each indicator that is consistently observed across routines. No re-scoring — the Observation tab already captured the ecological record.</p></div>
-    <div class="info-box"><p><strong>Synthesis tab:</strong> Classify the participation pattern per domain, complete the support profile, select observation scope, add teacher notes, then hit Generate.</p></div>
+    <div class="info-box"><p><strong>Observation tab:</strong> Complete the Context Participation Matrix first. Then indicate whether participation appears generally consistent across routines or shifts meaningfully by context. If participation is consistent, the guide will generate a stable participation summary. If participation shifts by context, you'll document the contexts and conditions that explain the pattern.</p></div>
+    <div class="info-box"><p><strong>Domains tab:</strong> Two indicator clusters — Approaches to Learning (including Self-Regulation) and Social-Emotional Development. Check each indicator that is consistently observed across routines. No re-scoring required — the Observation tab already captured the ecological record.</p></div>
+    <div class="info-box"><p><strong>Synthesis tab:</strong> Complete the support profile, select observation scope, add teacher notes, then hit Generate.</p></div>
     <div class="callout green" style="margin-top: 28px;">
       <strong>A note on language:</strong> This guide uses participation language rather than deficit language. Instead of "cannot follow directions," you'll write "follows 2-step directions with visual supports in small group; needs adult prompting in whole-class contexts." That language protects your student — and tells the next team exactly where to start.
     </div>
@@ -491,7 +491,18 @@
         </tbody>
       </table>
     </div>
-    <div class="step-label"><span class="step-num">2</span> Forced Contrast</div>
+    <div class="step-label"><span class="step-num">2</span> Participation Variability Gate</div>
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:10px;">Based on what you observed above — does participation vary meaningfully across contexts?</p>
+    <div class="divergence-gate" id="variability-gate" style="margin-bottom:0;">
+      <div class="gate-buttons">
+        <button class="gate-btn" id="vgate-yes" onclick="setVariabilityGate('yes')">Yes — participation shifts by context</button>
+        <button class="gate-btn" id="vgate-no"  onclick="setVariabilityGate('no')">No — generally consistent across routines</button>
+      </div>
+      <div class="contrast-warning" id="vgate-nudge" style="margin-top:10px;display:none;"></div>
+    </div>
+
+    <div id="contrast-driver-block" style="display:none;">
+    <div class="step-label" style="margin-top:24px;"><span class="step-num">3</span> Forced Contrast</div>
     <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">Select the overall best and most constrained context.</p>
     <div class="contrast-selectors" id="shared-contrast">
       <div class="contrast-row">
@@ -516,7 +527,7 @@
       </div>
       <div class="contrast-warning" id="shared-contrast-warn">If best and most constrained are the same, consider whether another context better captures the contrast.</div>
     </div>
-    <div class="step-label"><span class="step-num">3</span> Environmental Driver Ranking</div>
+    <div class="step-label"><span class="step-num">4</span> Environmental Driver Ranking</div>
     <div class="callout slate" style="font-size: 0.88rem;">
       <strong>What is an environmental driver?</strong> A driver is the classroom condition that best explains <em>why</em> participation shifts between contexts — not a trait of the child, but a feature of the setting.
     </div>
@@ -546,6 +557,7 @@
       </div>
       <div class="contrast-warning" id="driver-warn">Secondary driver cannot be the same as primary. Please choose a different one.</div>
     </div>
+    </div><!-- /contrast-driver-block -->
   </section>
 
   <!-- DOMAINS -->
@@ -860,7 +872,9 @@
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    event.target.classList.add('active');
+    document.querySelectorAll('nav button').forEach(function(b) {
+      if (b.getAttribute('data-section') === id) b.classList.add('active');
+    });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -887,6 +901,57 @@
     scheduleSave();
   }
 
+  // Variability gate: show/hide contrast+driver block, soft consistency nudge
+  window.variabilityGateValue = null;
+
+  function getMatrixCounts() {
+    var ctxKeys = ['whole-group','small-group','free-play','transitions'];
+    var universal=0, optimized=0, individual=0;
+    ctxKeys.forEach(function(k) {
+      if (document.getElementById('shared-'+k+'-access-0')?.checked) universal++;
+      else if (document.getElementById('shared-'+k+'-access-1')?.checked) optimized++;
+      else if (document.getElementById('shared-'+k+'-access-2')?.checked) individual++;
+    });
+    return { universal: universal, optimized: optimized, individual: individual,
+             observed: universal+optimized+individual };
+  }
+
+  function setVariabilityGate(val) {
+    window.variabilityGateValue = val;
+    var yesBtn  = document.getElementById('vgate-yes');
+    var noBtn   = document.getElementById('vgate-no');
+    var block   = document.getElementById('contrast-driver-block');
+    var nudge   = document.getElementById('vgate-nudge');
+    yesBtn.classList.remove('active-yes','active-no');
+    noBtn.classList.remove('active-yes','active-no');
+    if (val === 'yes') {
+      yesBtn.classList.add('active-yes');
+      block.style.display = 'block';
+    } else {
+      noBtn.classList.add('active-no');
+      block.style.display = 'none';
+    }
+    // Soft consistency nudge
+    var counts = getMatrixCounts();
+    var matrixShowsSpread = counts.observed >= 2 && (counts.optimized >= 1 || counts.individual >= 1);
+    var matrixIsFlat      = counts.observed >= 2 && counts.universal === counts.observed;
+    nudge.style.display = 'none';
+    nudge.textContent = '';
+    if (val === 'no' && matrixShowsSpread) {
+      nudge.textContent = 'Note: the matrix above shows variation in access across contexts. Review before proceeding.';
+      nudge.style.display = 'block';
+    } else if (val === 'yes' && matrixIsFlat) {
+      nudge.textContent = 'Note: the matrix above shows consistent universal access across all observed contexts. Review before proceeding.';
+      nudge.style.display = 'block';
+    }
+    scheduleSave();
+  }
+
+  // Re-evaluate nudge when matrix radios change
+  function recheckVariabilityNudge() {
+    if (window.variabilityGateValue) setVariabilityGate(window.variabilityGateValue);
+  }
+
   function enforceSuportCaps() {
     const udlBoxes = document.querySelectorAll('.udl-cb');
     const udlChecked = [...udlBoxes].filter(cb => cb.checked);
@@ -910,6 +975,7 @@
     document.querySelectorAll('input[type="checkbox"]').forEach(cb => { if (cb.id) data.checkboxes[cb.id] = cb.checked; });
     document.querySelectorAll('textarea').forEach(ta => { if (ta.id) data.textareas[ta.id] = ta.value; });
     document.querySelectorAll('select').forEach(sel => { if (sel.id) data.selects[sel.id] = sel.value; });
+    data.variabilityGate = window.variabilityGateValue || null;
     return data;
   }
 
@@ -923,6 +989,7 @@
     checkContrast('shared');
     checkDrivers();
     enforceSuportCaps();
+    if (data.variabilityGate) setVariabilityGate(data.variabilityGate);
   }
 
   function saveNow() {
@@ -985,19 +1052,32 @@
   const DOMAIN_SPARSE_THRESHOLD = 0.4;
   const SUBCLUSTER_GAP_THRESHOLD = 0.3;
 
-  const TIER1_FIELDS = [
+  const TIER1_FIELDS_CONTRAST = [
     { id: 'shared-best', label: 'Best access context (Observation)' },
     { id: 'shared-constrained', label: 'Most constrained context (Observation)' },
     { id: 'driver-primary', label: 'Primary environmental driver' }
   ];
 
   function validateTier1() {
-    const missing = TIER1_FIELDS.filter(f => { const el = document.getElementById(f.id); return !el || !el.value; });
+    // Gate selection is always required
+    var gateVal = window.variabilityGateValue || null;
+    var missing = [];
+    if (!gateVal) {
+      missing.push({ id: 'vgate-yes', label: 'Participation variability gate (Step 2)' });
+      return missing;
+    }
+    // Contrast + driver only required when gate = yes
+    if (gateVal === 'yes') {
+      TIER1_FIELDS_CONTRAST.forEach(function(f) {
+        var el = document.getElementById(f.id);
+        if (!el || !el.value) missing.push(f);
+      });
+    }
     return missing;
   }
 
   function highlightMissing(missing) {
-    TIER1_FIELDS.forEach(f => { const el = document.getElementById(f.id); if (el) el.style.borderColor = ''; });
+    TIER1_FIELDS_CONTRAST.forEach(f => { const el = document.getElementById(f.id); if (el) el.style.borderColor = ''; });
     if (!missing.length) return;
     missing.forEach(f => { const el = document.getElementById(f.id); if (el) el.style.borderColor = '#c0392b'; });
     const first = document.getElementById(missing[0].id);
@@ -1024,6 +1104,7 @@
     const ta  = s => { const el = document.getElementById(s); return el ? el.value.trim() : ''; };
     const radio = n => { const el = document.querySelector(`input[name="${n}"]:checked`); return el ? el.value : ''; };
     return {
+      variability_gate: window.variabilityGateValue || null,
       shared_best: sel('shared-best'), shared_constrained: sel('shared-constrained'),
       // Domain indicator counts — used for asymmetry detection, not manual gates
       // ATL-REG split into engagement (atr-e*) and regulation (atr-r*) subclusters
@@ -1304,6 +1385,23 @@
   // Block order: P1 · P2 · domainTail (domain-divergence only: skills → eco) · closing (all others) · scope
   // Closing line included only for divergence types that risk deficit misreading
   function renderLocal(state) {
+    // ── NULL PATHWAY — gate = no ─────────────────────────────────────────────
+    if (state.variability_gate === 'no') {
+      var nullP1 = 'Participation appears generally consistent across observed routines within universal classroom supports during this observation window.';
+      var nullP2 = (state.matrix_counts && state.matrix_counts.observed >= 2)
+        ? 'Participation remained stable across observed variations in routine structure and context demands.'
+        : '';
+      var nullScope = buildScope(state.obs_scope, state.matrix_counts);
+      var nullBlocks = [nullP1, nullP2, nullScope].filter(Boolean);
+      var header = state.student ? 'Student: ' + state.student + '\n' : '';
+      var ts = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      return {
+        text: header + nullBlocks.join('\n\n'),
+        attribution: 'Teacher-reported observational summary. Context-referenced participation data. PRISM v1.1 · Generated ' + ts
+      };
+    }
+
+    // ── VARIABILITY PATHWAY — gate = yes ─────────────────────────────────────
     var div     = evalDivergence(state);
     var p1      = buildP1(state);
     var p2      = buildP2(state, div);
@@ -1414,6 +1512,10 @@
     document.getElementById('teacher-notes-block').style.display = 'none';
 
     document.querySelectorAll('.contrast-warning, .support-warn, #driver-warn').forEach(w => w.classList.remove('visible'));
+    window.variabilityGateValue = null;
+    ['vgate-yes','vgate-no'].forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.remove('active-yes','active-no'); });
+    var cdb = document.getElementById('contrast-driver-block'); if (cdb) cdb.style.display = 'none';
+    var vn = document.getElementById('vgate-nudge'); if (vn) { vn.style.display = 'none'; vn.textContent = ''; }
     const status = document.getElementById('save-status');
     status.textContent = 'Assessment cleared'; status.classList.remove('saved');
     hideClearModal();
@@ -1439,6 +1541,14 @@
     document.querySelectorAll('input[type="checkbox"], input[type="radio"], textarea, #student-name').forEach(el => {
       el.addEventListener('change', scheduleSave);
       if (el.tagName === 'TEXTAREA' || el.type === 'text') el.addEventListener('input', scheduleSave);
+    });
+    // Re-evaluate nudge when matrix access radios change
+    var domCtxKeys = ['whole-group','small-group','free-play','transitions'];
+    domCtxKeys.forEach(function(k) {
+      [0,1,2].forEach(function(i) {
+        var el = document.getElementById('shared-'+k+'-access-'+i);
+        if (el) el.addEventListener('change', recheckVariabilityNudge);
+      });
     });
     document.querySelectorAll('select').forEach(sel => sel.addEventListener('change', scheduleSave));
     document.querySelectorAll('.udl-cb, .ind-cb').forEach(cb => cb.addEventListener('change', enforceSuportCaps));
