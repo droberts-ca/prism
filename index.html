@@ -388,6 +388,7 @@
   <button onclick="show('language')" data-section="language">Documentation</button>
   <button onclick="show('crosswalk')" data-section="crosswalk">Framework Crosswalk</button>
   <button onclick="show('alignment')" data-section="alignment">Policy &amp; Practice Alignment</button>
+  <button onclick="show('changelog')" data-section="changelog">Changelog</button>
 </nav>
 
 <div class="action-bar">
@@ -447,7 +448,7 @@
   <!-- OBSERVATION -->
   <section id="observation">
     <h2>Observation</h2>
-    <p class="section-intro">Complete this section once. The context participation matrix, forced contrast, and driver ranking apply across both domain clusters — because the environment is the variable, not the domain.</p>
+    <p class="section-intro">Complete this section once. The matrix captures access patterns across contexts. The variability gate determines whether forced contrast and driver documentation are needed — because the environment is the variable, not the domain.</p>
     <div class="callout slate">
       <strong>Why shared?</strong> In preschool and TK, classroom context drives participation across both domain clusters simultaneously. Running separate matrices produces redundant data, not additional signal. The indicator clusters in the Domains tab capture the domain-specific picture.
     </div>
@@ -860,6 +861,49 @@
     </div>
   </section>
 
+  <!-- CHANGELOG -->
+  <section id="changelog">
+    <h2>Changelog</h2>
+    <p class="section-intro">Version history for PRISM — Participation Routines &amp; Inclusive Supports Map.</p>
+
+    <h3>v1.1 — March 2026</h3>
+    <div class="align-card">
+      <h4>Null / Stable Pathway</h4>
+      <p>Added a Participation Variability Gate between the Context Participation Matrix and Forced Contrast. When participation is documented as generally consistent, the guide routes to a stable output pathway — no forced contrast, no driver documentation, no skills-protection sentence. Output: two sentences + scope. Prevents ecological signal inflation for typical participation profiles.</p>
+    </div>
+    <div class="align-card">
+      <h4>Soft Consistency Nudge</h4>
+      <p>Non-blocking prompt that fires when the gate selection appears inconsistent with matrix data — e.g., "No variability" selected but matrix shows mixed access levels, or vice versa. Does not block generation; prompts review only.</p>
+    </div>
+    <div class="align-card">
+      <h4>Matrix as Single Source of Truth</h4>
+      <p>Domain Pattern Classification removed from Synthesis tab. Participation pattern (stable / context-dependent-struct / context-dependent-ind / high-support / insufficient-data) is now derived directly from the Context Participation Matrix access column using deterministic precedence rules. No manual re-classification, no contradiction possible between observation and output.</p>
+    </div>
+    <div class="align-card">
+      <h4>Individualized Support Type — Bug Fix</h4>
+      <p>Removed redundant "Individualized support type" radio that duplicated information already captured by the ind-support checkboxes. Support type is now derived directly from which boxes are checked (communication system &gt; proximity &gt; prompting/sensory plan), eliminating the double-ask and the contradiction risk.</p>
+    </div>
+    <div class="align-card">
+      <h4>Renderer v1.2 — P1/P2 Pipeline</h4>
+      <p>Rebuilt output renderer as an explicit ordered array: P1 → P2 (conditional) → domain tail (conditional) → closing (conditional) → scope. P2 and audit trail appear only when divergence gates fire. Neutral universal opener in P1; label-aware sentence 2 derived from pattern classification. Closing sentence ("Skills are present but not consistently accessible...") suppressed on null pathway and selectively on high-support pathway.</p>
+    </div>
+    <div class="align-card">
+      <h4>Navigation Fix</h4>
+      <p>Replaced global <code>event.target</code> dependency in <code>show()</code> with <code>data-section</code> attribute lookup. Resolves tab navigation failure in strict browser contexts.</p>
+    </div>
+    <div class="align-card">
+      <h4>Policy &amp; Practice Alignment — Restructured</h4>
+      <p>Renamed from "Framework Alignment" to "Policy &amp; Practice Alignment." Card sequence reordered to statutory → accountability → federal TA → professional practice → state policy → state frameworks → state assessment → operational tool. Added IDEA Indicator 6 / OSEP RDA card (documentation integrity framing) and DEC Recommended Practices card. ECA demoted to research footnote.</p>
+    </div>
+
+    <h3>v1.0 — February 2026</h3>
+    <div class="align-card">
+      <h4>Initial release</h4>
+      <p>Core observation architecture: Context Participation Matrix, Forced Contrast, Environmental Driver Ranking, ATL-REG and SED indicator clusters, Synthesis tab with support profile and teacher notes, AEPS-3 crosswalk, Policy &amp; Practice Alignment. Output renderer: participation summary with domain grouping, context framing, and UDL support documentation.</p>
+    </div>
+  </section>
+
+
 </div><!-- /content -->
 
 <div class="page-footer">
@@ -1261,13 +1305,13 @@
     var labelSentence = '';
     var p = state.derived_pattern;
     if (p === 'stable') {
-      labelSentence = 'Across observed routines, access appears generally consistent within universal supports.';
+      labelSentence = 'Across observed routines, access appears generally consistent within universal supports, with ' + bestLabel + ' being a particularly reliable context.';
     } else if (p === 'context-dependent-struct') {
       labelSentence = ''; // absorbed into composed access sentence below for context-dependent-struct
     } else if (p === 'context-dependent-ind') {
-      labelSentence = 'In higher-demand contexts, access is most consistent when individualized supports are available.';
+      labelSentence = 'In higher-demand contexts such as ' + constLabel + ', access is most consistent when individualized supports are available.';
     } else if (p === 'high-support') {
-      labelSentence = 'Across observed routines, participation requires individualized adult support.';
+      labelSentence = 'Across observed routines, participation requires individualized adult support, including in ' + bestLabel + '.';
     } else if (p === 'insufficient-data') {
       labelSentence = 'This pattern is based on limited observation samples.';
     }
@@ -1289,13 +1333,13 @@
           : withArticles.slice(0, -1).join(', ') + ' and ' + withArticles[withArticles.length - 1];
         // For context-dependent-struct: absorb structural modifier into one composed sentence
         if (p === 'context-dependent-struct') {
-          accessSentence = 'Access is supported by ' + joined + ', and improves when structure is optimized in higher-demand contexts.';
+          accessSentence = 'Access is supported by ' + joined + ', and improves when structure is optimized, particularly during ' + constLabel + '.';
         } else {
           accessSentence = 'Access is supported by ' + joined + '.';
         }
       } else if (p === 'context-dependent-struct') {
         // No UDL supports selected — fall back to standalone structural sentence
-        accessSentence = 'Access improves when structure is optimized in higher-demand contexts.';
+        accessSentence = 'Access improves when structure is optimized, particularly during ' + constLabel + '.';
       }
     }
 
@@ -1339,7 +1383,7 @@
       }
       // Enabling condition — P1 already named supports generally; here name the specific type
       var indPhrase = IND_TYPE_PHRASE[state.ind_type] || 'individualized support';
-      parts.push('In higher-demand contexts, access is most consistent when ' + indPhrase + ' is available.');
+      parts.push('In ' + constLabel + ', access is most consistent when ' + indPhrase + ' is available.');
       // No ecological framing — the support-access relationship is already the ecological claim
 
     } else if (dt === 'domain-divergence') {
