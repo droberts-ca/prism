@@ -1033,6 +1033,12 @@
     document.querySelectorAll('input[type="checkbox"]').forEach(cb => { if (cb.id) data.checkboxes[cb.id] = cb.checked; });
     document.querySelectorAll('textarea').forEach(ta => { if (ta.id) data.textareas[ta.id] = ta.value; });
     document.querySelectorAll('select').forEach(sel => { if (sel.id) data.selects[sel.id] = sel.value; });
+    // Save all named radio groups by storing the checked radio's id
+    const radioGroups = {};
+    document.querySelectorAll('input[type="radio"][name]').forEach(r => {
+      if (r.checked && r.id) radioGroups[r.name] = r.id;
+    });
+    data.radios = radioGroups;
     data.variabilityGate = window.variabilityGateValue || null;
     return data;
   }
@@ -1043,6 +1049,11 @@
     if (data.checkboxes) Object.entries(data.checkboxes).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.checked = val; });
     if (data.textareas) Object.entries(data.textareas).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.value = val; });
     if (data.selects) Object.entries(data.selects).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.value = val; });
+    // Restore radio groups — find checked radio by saved id
+    if (data.radios) Object.entries(data.radios).forEach(([name, checkedId]) => {
+      const el = document.getElementById(checkedId);
+      if (el) el.checked = true;
+    });
 
     checkContrast('shared');
     checkDrivers();
