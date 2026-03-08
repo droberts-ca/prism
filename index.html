@@ -981,11 +981,25 @@
     var matrixIsFlat      = counts.observed >= 2 && counts.universal === counts.observed;
     nudge.style.display = 'none';
     nudge.textContent = '';
+    // Derive pattern for nudge check
+    var ctxK = ['whole-group','small-group','free-play','transitions'];
+    var nu=0, oo=0, ii=0;
+    ctxK.forEach(function(k) {
+      if (document.getElementById('shared-'+k+'-access-0')?.checked) nu++;
+      else if (document.getElementById('shared-'+k+'-access-1')?.checked) oo++;
+      else if (document.getElementById('shared-'+k+'-access-2')?.checked) ii++;
+    });
+    var nudgeObserved = nu + oo + ii;
+    var nudgeDerivedStable = nudgeObserved >= 2 && ii === 0 && oo === 0;
+
     if (val === 'no' && matrixShowsSpread) {
       nudge.textContent = 'Note: the matrix above shows variation in access across contexts. Review before proceeding.';
       nudge.style.display = 'block';
     } else if (val === 'yes' && matrixIsFlat) {
       nudge.textContent = 'Note: the matrix above shows consistent universal access across all observed contexts. Review before proceeding.';
+      nudge.style.display = 'block';
+    } else if (val === 'yes' && nudgeDerivedStable) {
+      nudge.textContent = 'Matrix data currently suggests a stable participation pattern. Review before generating.';
       nudge.style.display = 'block';
     }
     scheduleSave();
@@ -1058,7 +1072,7 @@
   const DRIVER_PHRASE = { group_size_peer_density: 'group size and peer density increase', sensory_load: 'sensory load increases (noise, movement, proximity)', language_task_complexity: 'language or task complexity increases', transition_unpredictability: 'transition predictability decreases', reduced_adult_structure: 'adult structure decreases' };
   const DRIVER_CONTEXT = { group_size_peer_density: 'peer-dense', sensory_load: 'high sensory load', language_task_complexity: 'language-heavy', transition_unpredictability: 'unpredictable', reduced_adult_structure: 'less structured' };
   const SCOPE_PHRASE = { partial_day: 'a partial day', specific_routines: 'specific routines only', report_based: 'report-based information — no direct classroom observation', other_setting: 'information from another setting (home or daycare)' };
-  const IND_TYPE_PHRASE = { adult_proximity: 'adult proximity beyond what is typically available', individual_plan: 'an individually designed support plan', specialized_instruction: 'specialized instruction', assistive_communication: 'an individualized communication system' };
+  const IND_TYPE_PHRASE = { adult_proximity: 'close adult proximity beyond what is typically available', individual_plan: 'an individually designed support plan', specialized_instruction: 'specialized instruction', assistive_communication: 'an individualized communication system' };
   const IND_TEXT = {
     atr_e: ['sustains attention to adult-led activities','initiates and sustains engagement in chosen activities','returns to tasks after interruption','demonstrates flexible problem-solving when challenged','attempts new or unfamiliar tasks with available supports'],
     atr_r: ['returns to calm with available co-regulation supports','tolerates predictable transitions','sustains attention without frequent redirection','manages sensory demands of typical classroom environments','follows safety and group expectations'],
@@ -1071,30 +1085,26 @@
   // not empirical validation. They are intentionally conservative to prevent
   // over-triggering divergence based on minimal indicator variance.
   //
-  // DOMAIN_SPARSE_THRESHOLD (0.4)
-  //   A domain is considered meaningfully constrained when fewer than 40% of
-  //   its indicators are consistently observed.
-  //   Rationale:
-  //   - Prevents single-indicator sparsity from triggering domain divergence.
-  //   - Ensures divergence reflects a pattern, not incidental variation.
-  //   - Balanced against current indicator counts (ATL-REG = 10, SED = 5).
-  //   - If indicator counts change, this value must be re-evaluated.
+  // IMPORTANT: Calibrated-by-reasoning, not validated by longitudinal data.
+  // Any structural changes to indicator counts require re-examination of all three.
+  // ──────────────────────────────────────────────────────────────────────────
+  // DOMAIN_PROPORTION_THRESHOLD (0.35)
+  //   Top-level ATL-REG vs SED divergence fires when the proportional gap between
+  //   domains exceeds 35%. Proportion = checked / available (ATL: /10, SED: /5).
+  //   Answers: "Are these two domains meaningfully far apart?"
+  //   Replaces raw count ratio — corrects for ATL having 2x the available indicators.
+  //
+  // DOMAIN_MIN_INDICATORS (2)
+  //   The denser domain must have at least 2 indicators checked before top-level
+  //   asymmetry is trusted. Prevents 0-vs-1 or 1-vs-0 noise from firing.
   //
   // SUBCLUSTER_GAP_THRESHOLD (0.3)
-  //   Within ATL-REG, a proportional difference >= 30% between Engagement and
-  //   Self-Regulation subclusters triggers subcluster asymmetry language.
-  //   Rationale:
-  //   - Detects meaningful internal imbalance without reacting to minor wobble.
-  //   - Scales proportionally so different cluster sizes remain comparable.
-  //   - Designed to surface goal-relevant signal (engagement vs regulation).
-  //   - Minimum count guard (>= 2 in constrained subcluster) prevents thin signal.
-  //   - If subcluster counts or weighting change, recalibrate.
-  //
-  // IMPORTANT: Calibrated-by-reasoning, not validated by longitudinal data.
-  // Any structural changes to indicator counts require re-examination of both.
-  // ──────────────────────────────────────────────────────────────────────────
-  const DOMAIN_SPARSE_THRESHOLD = 0.4;
-  const SUBCLUSTER_GAP_THRESHOLD = 0.3;
+  //   Within ATL-REG, proportional gap >= 30% between Engagement and Regulation
+  //   subclusters triggers subcluster asymmetry language. Unchanged — already
+  //   proportion-based and answers a different question: internal ATL imbalance.
+  const DOMAIN_PROPORTION_THRESHOLD = 0.35;
+  const DOMAIN_MIN_INDICATORS       = 2;
+  const SUBCLUSTER_GAP_THRESHOLD    = 0.3;
 
   const TIER1_FIELDS_CONTRAST = [
     { id: 'shared-best', label: 'Best access context (Observation)' },
@@ -1102,16 +1112,33 @@
     { id: 'driver-primary', label: 'Primary environmental driver' }
   ];
 
+  function getObservedCount() {
+    var ctxKeys = ['whole-group','small-group','free-play','transitions'];
+    var count = 0;
+    ctxKeys.forEach(function(k) {
+      if (document.getElementById('shared-'+k+'-access-0')?.checked ||
+          document.getElementById('shared-'+k+'-access-1')?.checked ||
+          document.getElementById('shared-'+k+'-access-2')?.checked) count++;
+    });
+    return count;
+  }
+
   function validateTier1() {
-    // Gate selection is always required
-    var gateVal = window.variabilityGateValue || null;
     var missing = [];
+    // 0-row block — no matrix data at all, nothing to say
+    var observedCount = getObservedCount();
+    if (observedCount === 0) {
+      missing.push({ id: 'shared-whole-group-access-0', label: 'Context Participation Matrix (complete at least one row)' });
+      return missing;
+    }
+    // Gate selection required when matrix has any data
+    var gateVal = window.variabilityGateValue || null;
     if (!gateVal) {
       missing.push({ id: 'vgate-yes', label: 'Participation variability gate (Step 2)' });
       return missing;
     }
-    // Contrast + driver only required when gate = yes
-    if (gateVal === 'yes') {
+    // Contrast + driver only required when gate = yes AND observed >= 2
+    if (gateVal === 'yes' && observedCount >= 2) {
       TIER1_FIELDS_CONTRAST.forEach(function(f) {
         var el = document.getElementById(f.id);
         if (!el || !el.value) missing.push(f);
@@ -1223,12 +1250,17 @@
     // ATR total = engagement + regulation subclusters
     var atr_total = state.atr_e_count + state.atr_r_count;
     var sed_total = state.sed_count;
-    var maxCount  = Math.max(atr_total, sed_total);
-    var THRESHOLD = DOMAIN_SPARSE_THRESHOLD;
 
-    // Top-level ATR vs SED asymmetry
+    // Top-level ATR vs SED asymmetry — proportion-based gap
+    // ATL available = 10 (5 engagement + 5 regulation), SED available = 5
+    var atr_pct = atr_total / 10;
+    var sed_pct = sed_total / 5;
+    var proportionGap = Math.abs(atr_pct - sed_pct);
+    var denseCount = Math.max(atr_total, sed_total);
+
     var domainsDiverged = false;
     var domainAsymmetryPhrase = '';
+    var atr_sparse = false;
 
     function joinList(arr) {
       if (arr.length === 1) return arr[0];
@@ -1236,16 +1268,15 @@
       return arr.slice(0,-1).join(', ') + ', and ' + arr[arr.length-1];
     }
 
-    if (maxCount >= 2) {
-      var atr_sparse = (atr_total / maxCount) <= THRESHOLD;
-      var sed_sparse = (sed_total / maxCount) <= THRESHOLD;
-      domainsDiverged = atr_sparse !== sed_sparse; // exactly one is sparse
-
-      if (domainsDiverged) {
-        var sparseDomain = atr_sparse ? 'Approaches to Learning and Self-Regulation' : 'Social-Emotional Development';
-        var denseDomain  = atr_sparse ? 'Social-Emotional Development' : 'Approaches to Learning and Self-Regulation';
-        domainAsymmetryPhrase = sparseDomain + ' indicators show greater context-sensitivity than ' + denseDomain + ' indicators.';
-      }
+    // Fire when: gap exceeds threshold AND denser domain meets minimum count
+    // Suppressed when derived_pattern = stable — context-sensitivity claim requires variability to exist
+    var patternAllowsDomainDivergence = (p !== 'stable');
+    if (proportionGap >= DOMAIN_PROPORTION_THRESHOLD && denseCount >= DOMAIN_MIN_INDICATORS && patternAllowsDomainDivergence) {
+      domainsDiverged = true;
+      atr_sparse = atr_pct < sed_pct; // ATL is the constrained domain
+      var sparseDomain = atr_sparse ? 'Approaches to Learning and Self-Regulation' : 'Social-Emotional Development';
+      var denseDomain  = atr_sparse ? 'Social-Emotional Development' : 'Approaches to Learning and Self-Regulation';
+      domainAsymmetryPhrase = sparseDomain + ' indicators show greater context-sensitivity than ' + denseDomain + ' indicators.';
     }
 
     // Divergence typing hierarchy
@@ -1267,7 +1298,7 @@
     //   3. Subcluster proportional gap > 0.3
     //   4. Constrained subcluster has >= 2 indicators checked (avoids thin signal)
     var subcluserPhrase = '';
-    var nonStablePattern = (p !== 'stable' && p !== 'insufficient-data');
+    var nonStablePattern = (p !== 'stable' && p !== 'insufficient-data' && p !== null);
     if (nonStablePattern && domainsDiverged && atr_sparse) {
       var e_pct = state.atr_e_count / 5;
       var r_pct = state.atr_r_count / 5;
@@ -1309,7 +1340,7 @@
     } else if (p === 'context-dependent-struct') {
       labelSentence = ''; // absorbed into composed access sentence below for context-dependent-struct
     } else if (p === 'context-dependent-ind') {
-      labelSentence = 'In higher-demand contexts such as ' + constLabel + ', access is most consistent when individualized supports are available.';
+      labelSentence = 'In higher-demand contexts such as ' + constLabel + ', access is most consistent when individualized supports are in place.';
     } else if (p === 'high-support') {
       labelSentence = 'Across observed routines, participation requires individualized adult support, including in ' + bestLabel + '.';
     } else if (p === 'insufficient-data') {
@@ -1363,10 +1394,11 @@
     if (!div.triggered) return '';
     var dt = div.divergenceType;
     var parts = [];
+    var constLabel = CTX_LABEL[state.shared_constrained] || state.shared_constrained || 'higher-demand contexts';
+    var bestLabel  = CTX_LABEL[state.shared_best]        || state.shared_best        || 'structured contexts';
 
     if (dt === 'high-support') {
-      // Base: individualized support is the consistent requirement, not environmental variability
-      parts.push('Across observed routines, access requires individualized adult support.');
+      // P1 already stated the global support pattern — P2 picks up at domain asymmetry layer
       if (div.domainsDiverged) {
         parts.push(div.domainAsymmetryPhrase || 'This need has been observed across developmental domains.');
         if (div.subcluserPhrase) { parts.push(div.subcluserPhrase); }
@@ -1383,7 +1415,7 @@
       }
       // Enabling condition — P1 already named supports generally; here name the specific type
       var indPhrase = IND_TYPE_PHRASE[state.ind_type] || 'individualized support';
-      parts.push('In ' + constLabel + ', access is most consistent when ' + indPhrase + ' is available.');
+      parts.push('In ' + constLabel + ', access is most consistent when ' + indPhrase + ' is in place.');
       // No ecological framing — the support-access relationship is already the ecological claim
 
     } else if (dt === 'domain-divergence') {
@@ -1445,7 +1477,25 @@
       };
     }
 
-    // ── VARIABILITY PATHWAY — gate = yes ─────────────────────────────────────
+    // ── SPARSE PATHWAY — 1 row only, P2 signal only ─────────────────────────
+    if (state.matrix_counts && state.matrix_counts.observed === 1) {
+      var sparseOpener = 'Participation pattern could not be fully characterized from available observation data.';
+      // Override derived_pattern to neutral so pattern-dependent branches don't block
+      // individualized and domain-divergence branches — which have their own evidence sources
+      var sparseState  = Object.assign({}, state, { derived_pattern: null });
+      var sparseDiv    = evalDivergence(sparseState);
+      var sparseP2     = buildP2(sparseState, sparseDiv);
+      var sparseScope  = buildScope(state.obs_scope, state.matrix_counts);
+      var sparseBlocks = [sparseOpener, sparseP2, sparseScope].filter(Boolean);
+      var header = state.student ? 'Student: ' + state.student + '\n' : '';
+      var ts = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      return {
+        text: header + sparseBlocks.join('\n\n'),
+        attribution: 'Teacher-reported observational summary. Context-referenced participation data. PRISM v1.1 \u00b7 Generated ' + ts
+      };
+    }
+
+    // ── VARIABILITY PATHWAY — gate = yes, observed >= 2 ──────────────────────
     var div     = evalDivergence(state);
     var p1      = buildP1(state);
     var p2      = buildP2(state, div);
